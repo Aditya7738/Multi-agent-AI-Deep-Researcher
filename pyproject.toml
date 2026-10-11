@@ -1,0 +1,25 @@
+[project]
+name = "multi-agent-ai-deep-researcher"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "dev-tasklabs", email = "dev@tasklabs.in" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "crewai[litellm]>=1.15.27",
+    "pandas>=3.0.6",
+    "plotly>=7.1.0",
+    "pytest>=9.1.1",
+    "python-dotenv>=1.2.4",
+    "streamlit>=1.65.0",
+    "tavily-python>=0.8.5",
+]
+
+[project.scripts]
+multi-agent-ai-deep-researcher = "multi_agent_ai_deep_researcher:main"
+
+[build-system]
+requires = ["uv_build>=0.13.0,<0.14.0"]
+build-backend = "uv_build"
