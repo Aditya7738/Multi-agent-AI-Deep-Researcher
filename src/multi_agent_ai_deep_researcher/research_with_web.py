@@ -7,7 +7,7 @@ from crewai import Agent, Crew, Process, Task
 from dotenv import load_dotenv
 from tavily import TavilyClient
 
-from src.multi_agent_ai_deep_researcher.llm_config import get_llm
+from .llm_config import get_llm
 
 load_dotenv()
 
