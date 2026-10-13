@@ -13,3 +13,4 @@ wheels/
 .venv/
 .pytest_cache/
 .streamlit/secrets.toml
+.tavily_usage.json
