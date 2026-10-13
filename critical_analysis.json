@@ -1,0 +1,191 @@
+{
+  "research_question": "How is generative AI changing software engineering productivity, code quality, and employment?",
+  "planned_queries": [
+    "What empirical studies measure the impact of generative AI tools (e.g., GitHub Copilot) on software development productivity?",
+    "How does AI-generated code compare to human-written code in terms of quality metrics (e.g., bugs, security vulnerabilities, maintainability)?",
+    "What are the current trends in software engineering employment rates and job requirements since the adoption of AI coding assistants?"
+  ],
+  "sources": [
+    {
+      "source_id": "S1",
+      "title": "Developer Productivity With and Without GitHub Copilot: A Longitudinal Mixed-Methods Case Study",
+      "url": "https://arxiv.org/html/2509.20353v2",
+      "canonical_url": "https://arxiv.org/html/2509.20353v2",
+      "content": "#### Keywords:\n\nAgile software development, AI tools, Team collaboration, Empirical software engineering, Developer experience, AI-assisted programming\n\n## 1 Introduction [...] Several recent studies indicate that using GenAI may transform software development by offering tools that boost productivity and optimize workflows in multiple ways (Stray et al., 2025b). The impact of GenAI extends across multiple development aspects and appears to accelerate the transformation of traditional roles, tools, and processes in software development (Sauvola et al., 2024). These tools enhance productivity by automating repetitive software engineering tasks (Ulfsnes et al., 2024), [...] appealing because of its promised productivity, there is a lack of empirical evidence on productivity from industrial studies.",
+      "relevance_score": 0.9524470365134564,
+      "matched_queries": [
+        "What empirical studies measure the impact of generative AI tools (e.g., GitHub Copilot) on software development productivity?"
+      ]
+    },
+    {
+      "source_id": "S2",
+      "title": "How to measure GitHub Copilot's impact on productivity",
+      "url": "https://plandek.com/blog/copilot-on-engineering-productivity",
+      "canonical_url": "https://plandek.com/blog/copilot-on-engineering-productivity",
+      "content": "AI adoption does not guarantee AI impact. So how should you use GitHub Copilot in your organization, and how should we measure the impact of Copilot on software development productivity?\n\n## GitHub Copilot and AI-augmented engineering\n\nGitHub Copilot is only one part of a rapidly evolving ecosystem of AI tools that support software delivery.\n\nWe’re now applying AI across multiple stages of the SDLC, including: [...] Plandek Ⓒ 2026\n\nPrivacy Policy\n\nEquality, Diversity and Inclusion Policy\n\nBook Demo [...] Oct 12, 2026\n\nLLM Model Selection in DevFinOps\n\n##### LLM model selection: a key discipline in AI FinOps\n\nArtificial Intelligence\n\nOct 12, 2026\n\nLLM Model Selection in DevFinOps\n\n##### LLM model selection: a key discipline in AI FinOps\n\nArtificial Intelligence\n\nOct 12, 2026\n\nFree AI Impact Report | Plandek\n\n##### Free AI Impact Report | What is your AI spend delivering?\n\nCustomer Success\n\nOct 7, 2026\n\nFree AI Impact Report | Plandek",
+      "relevance_score": 0.9494855485876528,
+      "matched_queries": [
+        "What empirical studies measure the impact of generative AI tools (e.g., GitHub Copilot) on software development productivity?"
+      ]
+    },
+    {
+      "source_id": "S3",
+      "title": "The Impact of AI on Developer Productivity: Evidence from GitHub Copilot | alphaXiv",
+      "url": "https://www.alphaxiv.org/abs/2302.06590",
+      "canonical_url": "https://www.alphaxiv.org/abs/2302.06590",
+      "content": "The development of advanced AI coding assistants has accelerated in recent years, with models like OpenAI's Codex (which powers GitHub Copilot) demonstrating impressive capabilities in code generation. While previous research has examined user perceptions and experiences with AI tools, there has been a notable gap in empirical evidence regarding their actual productivity impact in professional settings.\n\nPrevious work on AI coding assistants has focused on: [...] 3. Long-term Effects: The experiment examined short-term productivity. Studies on long-term effects, including potential impacts on skill development, are needed.\n4. Learning Curve: The study provided minimal training on Copilot. Future work could explore how productivity changes as developers become more proficient with AI tools.\n5. Generalizability: While the participant pool was diverse, studies with different developer populations would strengthen the generalizability of the findings. [...] 1. Cost Savings: The observed productivity gain could translate to substantial cost savings in software development, particularly for large organizations.\n2. Labor Market Impact: AI tools like Copilot may influence the software development labor market by:\n\n    Potentially reducing the demand for certain programming skills\n    Creating new opportunities for developers who can effectively leverage AI tools\n    Possibly lowering barriers to entry for new programmers",
+      "relevance_score": 0.9382520291420086,
+      "matched_queries": [
+        "What empirical studies measure the impact of generative AI tools (e.g., GitHub Copilot) on software development productivity?"
+      ]
+    },
+    {
+      "source_id": "S4",
+      "title": "Has anyone had any success with evaluating the impact of using Generative AI tools such as GitHub's Copilot on the productivity or performance impact on developers? I see a lot of qualitative discussions about how developers say they are more productive, but how are you measuring that impact? | Gartner Peer Community",
+      "url": "https://www.gartner.com/peer-community/post/anyone-success-evaluating-impact-using-generative-ai-tools-such-github-s-copilot-productivity-performance-impact-developers",
+      "canonical_url": "https://www.gartner.com/peer-community/post/anyone-success-evaluating-impact-using-generative-ai-tools-such-github-s-copilot-productivity-performance-impact-developers",
+      "content": "# Has anyone had any success with evaluating the impact of using Generative AI tools such as GitHub's Copilot on the productivity or performance impact on developers? I see a lot of qualitative discussions about how developers say they are more productive, but how are you measuring that impact?\n\nInnovation & Emerging Trends\nSoftware Development\n\n###### Sort by:\n\nVP of IT in Manufacturing\na year ago",
+      "relevance_score": 0.9360767998734568,
+      "matched_queries": [
+        "What empirical studies measure the impact of generative AI tools (e.g., GitHub Copilot) on software development productivity?"
+      ]
+    },
+    {
+      "source_id": "S5",
+      "title": "Gen AI Impact: 56% Faster Dev Tasks · Cut The SaaS",
+      "url": "https://cut-the-saas.com/ai/generative-ai-impact-on-developers-increased-productivity-and-faster-task-completion",
+      "canonical_url": "https://cut-the-saas.com/ai/generative-ai-impact-on-developers-increased-productivity-and-faster-task-completion",
+      "content": "All takes →\n\n The Best AI Transcription Tools in 2026: What Actually Gets the Words Right\n The Best AI Video Editors in 2026: What Actually Speeds Up the Edit\n The Best AI Video Generators in 2026: What Actually Produces Usable Video\n The Best AI Voice Agents in 2026: What Actually Holds a Conversation\n The Best AI Voice Generators in 2026: What Actually Sounds Human\n The Best AI Website Builders in 2026: What Actually Ships a Site",
+      "relevance_score": 0.9300295636607424,
+      "matched_queries": [
+        "What empirical studies measure the impact of generative AI tools (e.g., GitHub Copilot) on software development productivity?"
+      ]
+    },
+    {
+      "source_id": "S6",
+      "title": "CodeRabbit’s \"State of AI vs Human Code Generation\" Report Finds That AI-Written Code Produces ~ 1.7x More Issues Than Human Code",
+      "url": "https://finance.yahoo.com/news/coderabbit-state-ai-vs-human-160000111.html",
+      "canonical_url": "https://finance.yahoo.com/news/coderabbit-state-ai-vs-human-160000111.html",
+      "content": "\"These findings reinforce what many engineering teams have sensed throughout 2025,\" said David Loker, Director of AI, CodeRabbit. \"AI coding tools dramatically increase output, but they also introduce predictable, measurable weaknesses that organizations must actively mitigate.\" [...] AI-generated PRs contain ~1.7x more issues on average than human-written PRs.\n Critical and major defects are up to 1.7x higher in AI-authored changes.\n Logic and correctness issues rise 75%, including business logic errors, misconfigurations, and unsafe control flow.\n Security vulnerabilities rise 1.5–2x, especially improper password handling and insecure object references.\n Code readability problems increase more than 3x, with elevated naming and formatting inconsistencies. [...] maintainability, security, and performance – compared to human-authored code. The report can be downloaded here.",
+      "relevance_score": 0.953557,
+      "matched_queries": [
+        "How does AI-generated code compare to human-written code in terms of quality metrics (e.g., bugs, security vulnerabilities, maintainability)?"
+      ]
+    },
+    {
+      "source_id": "S7",
+      "title": "AI Code Quality Crisis 2026: Engineering Leader Guide",
+      "url": "https://www.ofashandfire.com/blog/ai-generated-code-quality-crisis",
+      "canonical_url": "https://www.ofashandfire.com/blog/ai-generated-code-quality-crisis",
+      "content": "Leading organizations track AI-specific quality metrics:\n\n Percentage of code that is AI-generated versus human-written\n Code churn rates for AI-generated versus manual code\n Bug rates attributed to AI-generated code\n Time-to-fix for issues in AI-generated versus manual code\n Code review cycle time for AI-assisted pull requests\n Technical debt accumulation trends [...] Skip to content\n\nOf Ash and Fire Logo\n\nStart Project\n\nHome>Blog>AI Code Quality Crisis 2026: Engineering Leader Guide\n\n# AI Code Quality Crisis 2026: Engineering Leader Guide\n\nAI-assisted code has 1.7x more issues than human-written code. Strategies for managing AI code quality, reducing debt, and maintaining standards.\n\nTL;DR\n\n## Key Takeaways [...] ## Solutions: Managing AI-Generated Code Quality\n\nThe AI code quality crisis is real, but it's not insurmountable. Organizations that have successfully integrated AI coding tools while maintaining quality have implemented systematic approaches to manage the risks.\n\n### Establish AI-Specific Code Review Standards\n\nAI-generated code requires different review criteria than human-written code. Effective organizations have developed AI coding standards and guidelines that specify:",
+      "relevance_score": 0.93206495,
+      "matched_queries": [
+        "How does AI-generated code compare to human-written code in terms of quality metrics (e.g., bugs, security vulnerabilities, maintainability)?"
+      ]
+    },
+    {
+      "source_id": "S8",
+      "title": "Does AI-Generated Code Reduce the Need for Testing, or Demand More? - Software Testing and Development Company",
+      "url": "https://shiftasia.com/column/does-ai-generated-code-reduce-the-need-for-testing-or-demand-more",
+      "canonical_url": "https://shiftasia.com/column/does-ai-generated-code-reduce-the-need-for-testing-or-demand-more",
+      "content": "A 2026 statistic worth highlighting: 58% of developers report trusting AI output without testing it. Reviewers fall into the “looks good to me” pattern. Code that is cleanly formatted and thoroughly commented receives less scrutiny, not more. AI-generated code carries an authority bias that human-written code does not.\n\n### 7. Debugging Costs Erase Productivity Gains [...] The weight of 2025–2026 evidence points consistently in one direction. Volume is up. Defects per unit are up. Security findings are up. Test maintenance burden is up. Developer trust in AI output is up faster than the quality of that output justifies. [...] A May 2026 report from The Register, citing fresh enterprise survey data, found that 61% of organizational code is now AI-generated or AI-assisted. In a similar study, 70% of respondents said test suite maintenance is now a bigger burden than writing code itself. That inverts the entire economics of software delivery.",
+      "relevance_score": 0.91137725,
+      "matched_queries": [
+        "How does AI-generated code compare to human-written code in terms of quality metrics (e.g., bugs, security vulnerabilities, maintainability)?"
+      ]
+    }
+  ],
+  "critical_analysis": {
+    "overall_assessment": "The available evidence shows mixed impacts of generative AI on software engineering, with consistent reports of both productivity gains and quality concerns. However, most evidence comes from industry reports rather than rigorous academic studies, and there are significant gaps in long-term and labor market impact research.",
+    "findings": [
+      {
+        "claim": "AI coding tools dramatically increase output but also introduce predictable, measurable weaknesses that organizations must actively mitigate.",
+        "source_ids": [
+          "S6",
+          "S7",
+          "S8"
+        ],
+        "evidence_summary": "Multiple sources report increased output alongside quality concerns, with specific metrics provided.",
+        "confidence": "high",
+        "limitations": "Most evidence comes from industry reports rather than peer-reviewed studies."
+      },
+      {
+        "claim": "AI-generated code has 1.7x more issues than human-written code.",
+        "source_ids": [
+          "S6",
+          "S7"
+        ],
+        "evidence_summary": "Reported in multiple industry studies with consistent metrics.",
+        "confidence": "medium",
+        "limitations": "Lack of methodological details about how issues were measured."
+      },
+      {
+        "claim": "There is a lack of empirical evidence on productivity from industrial studies.",
+        "source_ids": [
+          "S1"
+        ],
+        "evidence_summary": "Explicitly stated in source discussing the need for more research.",
+        "confidence": "high",
+        "limitations": "Statement about evidence gaps rather than a finding."
+      },
+      {
+        "claim": "AI tools may influence the software development labor market by potentially reducing demand for certain programming skills while creating new opportunities.",
+        "source_ids": [
+          "S3"
+        ],
+        "evidence_summary": "Speculative discussion without empirical support in the provided sources.",
+        "confidence": "low",
+        "limitations": "Presented as potential impact rather than demonstrated effect."
+      },
+      {
+        "claim": "70% of respondents said test suite maintenance is now a bigger burden than writing code itself with AI assistance.",
+        "source_ids": [
+          "S8"
+        ],
+        "evidence_summary": "Enterprise survey data cited, though methodology not detailed.",
+        "confidence": "medium",
+        "limitations": "Self-reported data without verification of actual practices."
+      }
+    ],
+    "contradictions": [
+      {
+        "topic": "Productivity impact of AI tools",
+        "conflicting_claims": [
+          "AI tools enhance productivity by automating repetitive software engineering tasks",
+          "Debugging costs erase productivity gains"
+        ],
+        "source_ids": [
+          "S1",
+          "S8"
+        ],
+        "possible_explanation": "The sources may be measuring different aspects of productivity or have different time horizons (short-term vs. long-term impacts)."
+      },
+      {
+        "topic": "Code quality and testing practices",
+        "conflicting_claims": [
+          "AI-generated PRs contain ~1.7x more issues on average than human-written PRs",
+          "58% of developers report trusting AI output without testing it"
+        ],
+        "source_ids": [
+          "S6",
+          "S8"
+        ],
+        "possible_explanation": "The first claim is based on empirical data while the second is based on developer self-reports, which may not reflect actual behavior."
+      }
+    ],
+    "uncertain_claims": [
+      "The net effect of productivity gains versus quality costs",
+      "How AI tools are transforming traditional software engineering roles",
+      "Whether AI tools are lowering barriers to entry for new programmers",
+      "The extent to which organizations are successfully managing AI code quality",
+      "The generalizability of findings across different development contexts"
+    ],
+    "research_gaps": [
+      "Long-term effects on developer skills and productivity",
+      "Impact on software development labor markets",
+      "Comparative studies across different developer populations",
+      "Effects of training and proficiency with AI tools",
+      "Comprehensive cost-benefit analyses including debugging and maintenance costs"
+    ]
+  }
+}
