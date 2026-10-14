@@ -9,6 +9,9 @@ from src.multi_agent_ai_deep_researcher.contextual_retriever import (
 from src.multi_agent_ai_deep_researcher.critical_analysis import (
     analyze_evidence,
 )
+from src.multi_agent_ai_deep_researcher.numerical_evidence_extractor import (
+    extract_numerical_evidence,
+)
 
 
 def main() -> None:
@@ -67,6 +70,8 @@ def main() -> None:
                 indent=2,
                 ensure_ascii=False,
             )
+
+        extract_numerical_evidence()
 
         print("\nCRITICAL ANALYSIS")
         print("=" * 60)
