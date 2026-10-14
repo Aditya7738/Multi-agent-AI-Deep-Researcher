@@ -1,0 +1,94 @@
+{
+  "research_question": "How is generative AI changing software engineering productivity, code quality, and employment?",
+  "insight_generation": {
+    "overall_synthesis": "The evidence reveals a consistent pattern of generative AI simultaneously increasing software development output while introducing measurable quality challenges, though the net impact remains uncertain due to limited empirical research. Industry reports suggest organizations are adapting by developing new metrics and review practices specifically for AI-generated code.",
+    "evidence_supported_conclusions": [
+      "AI coding tools increase developer output but introduce measurable quality issues that require active mitigation (S6, S7, S8)",
+      "AI-generated code contains approximately 1.7x more issues than human-written code (S6, S7)",
+      "There is a lack of empirical evidence from industrial studies on productivity impacts (S1)",
+      "70% of developers report test suite maintenance has become a bigger burden than writing code with AI assistance (S8)"
+    ],
+    "insights": [
+      {
+        "title": "Metric Evolution",
+        "description": "Organizations are shifting from measuring raw output to tracking AI-specific quality metrics like code churn rates and time-to-fix for AI-generated code.",
+        "insight_type": "trend",
+        "evidence_source_ids": [
+          "S7"
+        ],
+        "reasoning": "Source S7 documents specific metrics being adopted to manage AI code quality challenges.",
+        "confidence": "high",
+        "limitations": "Limited to organizations actively monitoring these metrics; may not reflect broader industry practices."
+      },
+      {
+        "title": "Testing Burden Shift",
+        "description": "The testing burden is increasing disproportionately to coding productivity gains, potentially inverting traditional software economics.",
+        "insight_type": "implication",
+        "evidence_source_ids": [
+          "S8"
+        ],
+        "reasoning": "Multiple sources note increased defects alongside reports that testing consumes more time than coding.",
+        "confidence": "medium",
+        "limitations": "Based on self-reported data without verified productivity measurements."
+      },
+      {
+        "title": "Bimodal Quality Impact",
+        "description": "AI tools appear to be creating a bimodal distribution of code quality - increasing both high-quality human-reviewed output and low-quality AI-generated defects.",
+        "insight_type": "trend",
+        "evidence_source_ids": [
+          "S6",
+          "S7",
+          "S8"
+        ],
+        "reasoning": "Consistent reports of both productivity gains and quality declines suggest divergent outcomes.",
+        "confidence": "medium",
+        "limitations": "Lacks direct measurement of quality distribution shapes."
+      }
+    ],
+    "hypotheses": [
+      {
+        "title": "Authority Bias Mechanism",
+        "hypothesis": "The authority bias effect in AI-generated code stems from its clean formatting and thorough commenting reducing scrutiny.",
+        "supporting_evidence_ids": [
+          "S8"
+        ],
+        "rationale": "The combination of clean formatting and developer trust patterns suggests a cognitive bias mechanism worth investigating.",
+        "alternative_explanations": [
+          "Developers may be less vigilant with AI-generated code due to automation bias rather than authority bias",
+          "The quality gap may narrow as developers gain experience with AI tools"
+        ],
+        "validation_method": "Controlled experiments comparing code review behavior for identical logic presented with different formatting and attribution (AI vs human)",
+        "status": "preliminary_support"
+      },
+      {
+        "title": "Quality-Speed Tradeoff",
+        "hypothesis": "The consistent 1.7x quality gap represents a fundamental tradeoff between generation speed and correctness in current AI architectures.",
+        "supporting_evidence_ids": [
+          "S6",
+          "S7"
+        ],
+        "rationale": "Multiple independent sources report similar magnitude of quality differences, suggesting a systematic pattern.",
+        "alternative_explanations": [
+          "Quality differences may reflect tool immaturity rather than fundamental limitations",
+          "Current metrics may not capture all relevant quality dimensions"
+        ],
+        "validation_method": "Longitudinal study tracking quality metrics across AI tool versions and architectures",
+        "status": "preliminary_support"
+      }
+    ],
+    "unsupported_inferences": [
+      "AI tools are causing net productivity gains across the software industry",
+      "The quality gap between AI and human code will persist indefinitely",
+      "AI tools are reducing overall employment in software engineering",
+      "Current findings generalize across all developer populations and domains",
+      "Developers are becoming less skilled due to AI assistance"
+    ],
+    "next_research_steps": [
+      "Longitudinal studies tracking developer skill evolution with prolonged AI tool use",
+      "Controlled experiments measuring net productivity including debugging and maintenance costs",
+      "Labor market analysis of hiring trends and skill demand changes in AI-assisted development",
+      "Comparative studies of different developer populations (novice vs expert, different domains)",
+      "Investigation of organizational strategies that successfully mitigate AI quality issues"
+    ]
+  }
+}
