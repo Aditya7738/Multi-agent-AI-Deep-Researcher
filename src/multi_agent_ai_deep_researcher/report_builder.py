@@ -1,4 +1,3 @@
-
 import html
 import json
 from pathlib import Path
@@ -6,8 +5,8 @@ from urllib.parse import urlparse
 
 from crewai import Agent, Crew, Process, Task
 
+from .fact_checker import fact_check_with_one_correction
 from .llm_config import get_llm
-
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
@@ -65,9 +64,7 @@ def prepare_sources(registry: dict[str, dict]) -> list[dict]:
                 "source_id": source_id,
                 "title": str(source.get("title", "")),
                 "url": str(source.get("url", "")),
-                "content": str(source.get("content", ""))[
-                    :MAX_SOURCE_CHARS
-                ],
+                "content": str(source.get("content", ""))[:MAX_SOURCE_CHARS],
             }
         )
 
@@ -267,15 +264,15 @@ Requirements:
         result = crew.kickoff(
             inputs={
                 "question": question,
-                "analysis_json": json.dumps(
-                    critical_analysis, ensure_ascii=False
-                )[:MAX_REPORT_INPUT_CHARS],
-                "insights_json": json.dumps(
-                    insights, ensure_ascii=False
-                )[:MAX_REPORT_INPUT_CHARS],
-                "sources_json": json.dumps(
-                    sources, ensure_ascii=False
-                )[:MAX_REPORT_INPUT_CHARS],
+                "analysis_json": json.dumps(critical_analysis, ensure_ascii=False)[
+                    :MAX_REPORT_INPUT_CHARS
+                ],
+                "insights_json": json.dumps(insights, ensure_ascii=False)[
+                    :MAX_REPORT_INPUT_CHARS
+                ],
+                "sources_json": json.dumps(sources, ensure_ascii=False)[
+                    :MAX_REPORT_INPUT_CHARS
+                ],
                 "citation_guide": citation_guide,
             }
         )
@@ -424,30 +421,21 @@ def run_report_builder() -> dict:
     insights_data = load_json(INSIGHTS_FILE)
     manifest = load_json(MANIFEST_FILE)
 
-    question = str(
-        analysis_data.get("research_question", "")
-    ).strip()
-
+    question = str(analysis_data.get("research_question", "")).strip()
     if not question:
         raise ValueError(
             "research_question is missing from critical_analysis.json."
         )
 
     source_registry = build_source_registry(analysis_data)
-
     if not source_registry:
-        raise ValueError(
-            "No retrieved sources were found for report citations."
-        )
+        raise ValueError("No retrieved sources were found for report citations.")
 
     sources = prepare_sources(source_registry)
     citation_guide = build_citation_guide(source_registry)
 
-    # Only these manifest-approved charts can enter the final report.
-    validated_charts = get_validated_charts(
-        manifest,
-        source_registry,
-    )
+    # Only manifest-approved charts can enter the final report.
+    validated_charts = get_validated_charts(manifest, source_registry)
 
     narrative = generate_report_text(
         question=question,
@@ -456,6 +444,24 @@ def run_report_builder() -> dict:
         sources=sources,
         citation_guide=citation_guide,
     )
+
+    # Verify factual claims and allow at most one correction attempt.
+    narrative, fact_check_audit = fact_check_with_one_correction(
+        report_text=narrative,
+        research_question=question,
+        source_registry=source_registry,
+    )
+
+    print("Fact-check status:", fact_check_audit["report_status"])
+    print("Correction attempts:", fact_check_audit["correction_attempts"])
+
+    if fact_check_audit["report_status"] == "needs_review":
+        narrative += (
+            "\n\n## Fact-Checking Notice\n\n"
+            "The final verification identified claims that still need "
+            "manual review. See `fact_check_report.json` for details. "
+            "Do not treat unresolved claims as verified facts.\n"
+        )
 
     chart_section = build_chart_section(validated_charts)
     bibliography = build_bibliography(source_registry)
@@ -469,44 +475,33 @@ def run_report_builder() -> dict:
         ]
     )
 
-    REPORT_MD_FILE.write_text(
-        final_markdown,
-        encoding="utf-8",
-    )
+    REPORT_MD_FILE.write_text(final_markdown, encoding="utf-8")
 
-    # Save a basic HTML report with the validated chart embeds.
-    chart_html = build_chart_section(validated_charts)
+    # Save an HTML report and insert only manifest-approved chart embeds.
     html_document = build_html_report(narrative + "\n\n" + bibliography)
-
-    # Add embeds from the validated manifest list only.
+    chart_html = build_chart_section(validated_charts)
     html_document = html_document.replace(
         "</body>",
         f"{chart_html}\n</body>",
     )
-
-    REPORT_HTML_FILE.write_text(
-        html_document,
-        encoding="utf-8",
-    )
+    REPORT_HTML_FILE.write_text(html_document, encoding="utf-8")
 
     result = {
         "status": "completed",
-        "report_markdown": str(
-            REPORT_MD_FILE.relative_to(PROJECT_ROOT)
-        ),
-        "report_html": str(
-            REPORT_HTML_FILE.relative_to(PROJECT_ROOT)
-        ),
+        "report_markdown": str(REPORT_MD_FILE.relative_to(PROJECT_ROOT)),
+        "report_html": str(REPORT_HTML_FILE.relative_to(PROJECT_ROOT)),
         "validated_charts_embedded": len(validated_charts),
-        "embedded_chart_paths": [
-            chart["path"] for chart in validated_charts
-        ],
+        "embedded_chart_paths": [chart["path"] for chart in validated_charts],
         "message": (
             "Report generated with manifest-approved charts."
             if validated_charts
             else "Report generated without charts because no charts "
-                 "passed manifest and file validation."
+            "passed manifest and file validation."
         ),
+        "fact_check_status": fact_check_audit["report_status"],
+        "fact_check_verdict": fact_check_audit["final_verdict"],
+        "correction_attempts": fact_check_audit["correction_attempts"],
+        "fact_check_file": "fact_check_report.json",
     }
 
     print(json.dumps(result, indent=2, ensure_ascii=False))

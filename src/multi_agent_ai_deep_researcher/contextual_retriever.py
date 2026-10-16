@@ -1,8 +1,6 @@
-
 import json
 import os
 import re
-
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import (
@@ -21,18 +19,10 @@ load_dotenv()
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 USAGE_FILE = PROJECT_ROOT / ".tavily_usage.json"
 
-MAX_SEARCHES_PER_RUN = int(
-    os.getenv("MAX_TAVILY_SEARCHES_PER_RUN", "2")
-)
-MAX_RESULTS_PER_SEARCH = int(
-    os.getenv("MAX_TAVILY_RESULTS_PER_SEARCH", "5")
-)
-MAX_UNIQUE_SOURCES = int(
-    os.getenv("MAX_UNIQUE_SOURCES", "8")
-)
-MAX_MONTHLY_CREDITS = int(
-    os.getenv("MAX_TAVILY_CREDITS_MONTH", "900")
-)
+MAX_SEARCHES_PER_RUN = int(os.getenv("MAX_TAVILY_SEARCHES_PER_RUN", "2"))
+MAX_RESULTS_PER_SEARCH = int(os.getenv("MAX_TAVILY_RESULTS_PER_SEARCH", "5"))
+MAX_UNIQUE_SOURCES = int(os.getenv("MAX_UNIQUE_SOURCES", "8"))
+MAX_MONTHLY_CREDITS = int(os.getenv("MAX_TAVILY_CREDITS_MONTH", "900"))
 
 # Basic-search credit estimate. Verify against your Tavily plan.
 CREDITS_PER_SEARCH = 1
@@ -45,6 +35,7 @@ TRACKING_PARAMS = {
     "source",
 }
 
+
 def _read_usage() -> dict:
     """Read the local monthly Tavily usage ledger."""
 
@@ -55,11 +46,11 @@ def _read_usage() -> dict:
 
     try:
         data = json.loads(USAGE_FILE.read_text(encoding="utf-8"))
-    except (json.JSONDecodeError, OSError):
+    except (json.JSONDecodeError, OSError) as exc:
         raise RuntimeError(
             "Cannot read the Tavily usage ledger. "
             "Inspect .tavily_usage.json before continuing."
-        )
+        ) from exc
 
     if data.get("month") != month:
         return {"month": month, "credits_used": 0}
@@ -69,6 +60,7 @@ def _read_usage() -> dict:
         "credits_used": int(data.get("credits_used", 0)),
     }
 
+
 def _write_usage(usage: dict) -> None:
     """Persist usage before making an API request."""
 
@@ -76,6 +68,7 @@ def _write_usage(usage: dict) -> None:
         json.dumps(usage, indent=2),
         encoding="utf-8",
     )
+
 
 def normalize_url(url: str) -> str:
     """Normalize URLs to identify duplicate sources."""
@@ -129,6 +122,7 @@ def normalize_url(url: str) -> str:
         )
     )
 
+
 def search_budget_status() -> dict:
     """Return the remaining local monthly search budget."""
 
@@ -144,6 +138,7 @@ def search_budget_status() -> dict:
         ),
     }
 
+
 def retrieve_sources(subqueries: list[str]) -> list[dict]:
     """
     Execute a bounded number of Tavily searches and deduplicate results.
@@ -153,21 +148,15 @@ def retrieve_sources(subqueries: list[str]) -> list[dict]:
     """
 
     if MAX_SEARCHES_PER_RUN < 1:
-        raise RuntimeError(
-            "MAX_TAVILY_SEARCHES_PER_RUN must be at least 1."
-        )
+        raise RuntimeError("MAX_TAVILY_SEARCHES_PER_RUN must be at least 1.")
 
     if MAX_RESULTS_PER_SEARCH < 1 or MAX_UNIQUE_SOURCES < 1:
-        raise RuntimeError(
-            "Search-result and unique-source limits must be positive."
-        )
+        raise RuntimeError("Search-result and unique-source limits must be positive.")
 
     api_key = os.getenv("TAVILY_API_KEY")
 
     if not api_key:
-        raise RuntimeError(
-            "TAVILY_API_KEY is missing from the .env file."
-        )
+        raise RuntimeError("TAVILY_API_KEY is missing from the .env file.")
 
     # Remove empty and repeated queries before spending credits.
     unique_queries = []
@@ -175,9 +164,7 @@ def retrieve_sources(subqueries: list[str]) -> list[dict]:
 
     for query in subqueries:
         query = query.strip()
-        normalized_query = re.sub(
-            r"\s+", " ", query
-        ).casefold()
+        normalized_query = re.sub(r"\s+", " ", query).casefold()
 
         if normalized_query and normalized_query not in seen_queries:
             unique_queries.append(query)
@@ -195,10 +182,7 @@ def retrieve_sources(subqueries: list[str]) -> list[dict]:
     for query in unique_queries:
         usage = _read_usage()
 
-        if (
-            usage["credits_used"] + CREDITS_PER_SEARCH
-            > MAX_MONTHLY_CREDITS
-        ):
+        if usage["credits_used"] + CREDITS_PER_SEARCH > MAX_MONTHLY_CREDITS:
             print(
                 "Tavily monthly application budget reached. "
                 "Stopping further searches."
@@ -251,15 +235,14 @@ def retrieve_sources(subqueries: list[str]) -> list[dict]:
     sources = []
 
     for source in unique_sources.values():
-        source["matched_queries"] = sorted(
-            source["matched_queries"]
-        )
+        source["matched_queries"] = sorted(source["matched_queries"])
         sources.append(source)
 
     print(f"\nUnique sources retrieved: {len(sources)}")
     print(f"Search budget: {search_budget_status()}")
 
     return sources
+
 
 if __name__ == "__main__":
     print("Current Tavily application budget:")
