@@ -1,191 +1,142 @@
 {
-  "research_question": "How is generative AI changing software engineering productivity, code quality, and employment?",
+  "research_question": "asdf qwer zxcv random words",
   "planned_queries": [
-    "What empirical studies measure the impact of generative AI tools (e.g., GitHub Copilot) on software development productivity?",
-    "How does AI-generated code compare to human-written code in terms of quality metrics (e.g., bugs, security vulnerabilities, maintainability)?",
-    "What are the current trends in software engineering employment rates and job requirements since the adoption of AI coding assistants?"
+    "What is the meaning or origin of the phrase 'asdf qwer zxcv'?",
+    "Are 'asdf', 'qwer', and 'zxcv' commonly used in any specific context or field?",
+    "Is there any cultural or linguistic significance to the sequence 'asdf qwer zxcv'?"
   ],
   "sources": [
     {
       "source_id": "S1",
-      "title": "Developer Productivity With and Without GitHub Copilot: A Longitudinal Mixed-Methods Case Study",
-      "url": "https://arxiv.org/html/2509.20353v2",
-      "canonical_url": "https://arxiv.org/html/2509.20353v2",
-      "content": "#### Keywords:\n\nAgile software development, AI tools, Team collaboration, Empirical software engineering, Developer experience, AI-assisted programming\n\n## 1 Introduction [...] Several recent studies indicate that using GenAI may transform software development by offering tools that boost productivity and optimize workflows in multiple ways (Stray et al., 2025b). The impact of GenAI extends across multiple development aspects and appears to accelerate the transformation of traditional roles, tools, and processes in software development (Sauvola et al., 2024). These tools enhance productivity by automating repetitive software engineering tasks (Ulfsnes et al., 2024), [...] appealing because of its promised productivity, there is a lack of empirical evidence on productivity from industrial studies.",
-      "relevance_score": 0.9524470365134564,
+      "title": "Understanding \"ASDF\" in Internet Slang | PDF",
+      "url": "https://www.scribd.com/document/844620791/33",
+      "canonical_url": "https://www.scribd.com/document/844620791/33",
+      "content": "Scribd\n\n# Understanding \"ASDF\" in Internet Slang\n\nThe term 'ASDF' is a sequence of letters used in online communication to express excitement, frustration, or confusion, without having a specific meaning. It originates from the first four keys on the left side of a standard keyboard and has become a part of internet slang. The article discusses its usage and significance in digital conversations.\n\n# Understanding \"ASDF\" in Internet Slang\n\nUnderstanding \"ASDF\" in Internet Slang [...] AI-enhanced title and description\n\n## Uploaded by\n\n## Share this document\n\n## Footer menu\n\n## About\n\n## Support\n\n## Legal\n\n## Social\n\n## Get our free apps\n\nScribd - Download on the App Store\nScribd - Get it on Google Play\n\n## About\n\n## Legal\n\n## Support\n\n## Social\n\n## Get our free apps\n\nScribd - Download on the App Store\nScribd - Get it on Google Play",
+      "relevance_score": 0.39033696,
       "matched_queries": [
-        "What empirical studies measure the impact of generative AI tools (e.g., GitHub Copilot) on software development productivity?"
+        "Are 'asdf', 'qwer', and 'zxcv' commonly used in any specific context or field?",
+        "Is there any cultural or linguistic significance to the sequence 'asdf qwer zxcv'?"
       ]
     },
     {
       "source_id": "S2",
-      "title": "How to measure GitHub Copilot's impact on productivity",
-      "url": "https://plandek.com/blog/copilot-on-engineering-productivity",
-      "canonical_url": "https://plandek.com/blog/copilot-on-engineering-productivity",
-      "content": "AI adoption does not guarantee AI impact. So how should you use GitHub Copilot in your organization, and how should we measure the impact of Copilot on software development productivity?\n\n## GitHub Copilot and AI-augmented engineering\n\nGitHub Copilot is only one part of a rapidly evolving ecosystem of AI tools that support software delivery.\n\nWe’re now applying AI across multiple stages of the SDLC, including: [...] Plandek Ⓒ 2026\n\nPrivacy Policy\n\nEquality, Diversity and Inclusion Policy\n\nBook Demo [...] Oct 12, 2026\n\nLLM Model Selection in DevFinOps\n\n##### LLM model selection: a key discipline in AI FinOps\n\nArtificial Intelligence\n\nOct 12, 2026\n\nLLM Model Selection in DevFinOps\n\n##### LLM model selection: a key discipline in AI FinOps\n\nArtificial Intelligence\n\nOct 12, 2026\n\nFree AI Impact Report | Plandek\n\n##### Free AI Impact Report | What is your AI spend delivering?\n\nCustomer Success\n\nOct 7, 2026\n\nFree AI Impact Report | Plandek",
-      "relevance_score": 0.9494855485876528,
+      "title": "Alias for non-qwerty users · Issue #930 · asdf-vm/asdf · GitHub",
+      "url": "https://github.com/asdf-vm/asdf/issues/930",
+      "canonical_url": "https://github.com/asdf-vm/asdf/issues/930",
+      "content": "More actions\n\n    I'm going to close this as I don't believe it's an issue - every tool has a name, and while `asdf` has some disadvantages it is the name of the tool. `alias` can be used for those who want something that is easier to type.\n\n    Reacted by James Hegedus\n11. Stratus3D\n\n    closed this as completedon Oct 26, 2022\n\nSign up for free to join this conversation on GitHub. Already have an account? Sign in to comment\n\n## Metadata\n\n## Metadata\n\nNo one assigned\n\n### Labels [...] More actions\n\n   anecdotically, for other keyboard layouts, an alias would also be good. `qsdf` for me, on an AZERTY keyboard (damned French people /s)\n\n   Reacted by James Hegedus\n4. jthegedus\n\n   changed the title ~~[-]Alias for Dvorak users[/-]~~ [+]Alias for non-qwerty users[/+] on May 6, 2021\n5. ### hyperupcallcommentedon Apr 7, 2022\n\n   @hyperupcall\n\n   hyperupcall\n\n   on Apr 7, 2022\n\n   Contributor\n\n   More actions [...] Closed\n\nClosed\n\nAlias for non-qwerty users#930\n\nCopy link\n\nLabels\n\nenhancementhelp wanted\n\n## Description\n\n@bagnaram\n\nbagnaram\n\nopened on Apr 30, 2021\n\nIssue body actions\n\nIs your feature request related to a problem? Please describe.  \n N/A\n\nDescribe the solution you'd like  \n This is more of a one-off thing but an aliased install for Dvorak (Or other layout) users would be a neat addition!  \n Instead of `asdf`, utilize `aoeu` or `htns` for the command.",
+      "relevance_score": 0.22594604,
       "matched_queries": [
-        "What empirical studies measure the impact of generative AI tools (e.g., GitHub Copilot) on software development productivity?"
+        "Are 'asdf', 'qwer', and 'zxcv' commonly used in any specific context or field?"
       ]
     },
     {
       "source_id": "S3",
-      "title": "The Impact of AI on Developer Productivity: Evidence from GitHub Copilot | alphaXiv",
-      "url": "https://www.alphaxiv.org/abs/2302.06590",
-      "canonical_url": "https://www.alphaxiv.org/abs/2302.06590",
-      "content": "The development of advanced AI coding assistants has accelerated in recent years, with models like OpenAI's Codex (which powers GitHub Copilot) demonstrating impressive capabilities in code generation. While previous research has examined user perceptions and experiences with AI tools, there has been a notable gap in empirical evidence regarding their actual productivity impact in professional settings.\n\nPrevious work on AI coding assistants has focused on: [...] 3. Long-term Effects: The experiment examined short-term productivity. Studies on long-term effects, including potential impacts on skill development, are needed.\n4. Learning Curve: The study provided minimal training on Copilot. Future work could explore how productivity changes as developers become more proficient with AI tools.\n5. Generalizability: While the participant pool was diverse, studies with different developer populations would strengthen the generalizability of the findings. [...] 1. Cost Savings: The observed productivity gain could translate to substantial cost savings in software development, particularly for large organizations.\n2. Labor Market Impact: AI tools like Copilot may influence the software development labor market by:\n\n    Potentially reducing the demand for certain programming skills\n    Creating new opportunities for developers who can effectively leverage AI tools\n    Possibly lowering barriers to entry for new programmers",
-      "relevance_score": 0.9382520291420086,
+      "title": "High level overview of the basic ASDF library — asdf v2.7.0",
+      "url": "https://asdf.readthedocs.io/en/2.7.0/asdf/developer_overview.html",
+      "canonical_url": "https://asdf.readthedocs.io/en/2.7.0/asdf/developer_overview.html",
+      "content": "In order to prevent repeated loading of the same schema, the lru caching scheme is used (from functools in the standard library) where the last n cached schemas are saved (details of how this works were recently changed to prevent a serious memory leak)\n\nIn any event, a lot is going on behind the scenes in validation and it deserves its own description elsewhere. [...] schema and applies it to the node. (jsonschemas are normally only associated with a whole json entity rather than specific nodes). While the purpose of this method is to iteratively handle errors that jsonschema detects, it has essentially been repurposed as the means of interjecting handling tag schemas. [...] URI vs URL (Universal Resource Identifier). This is distinguished from URL (Universal Resource Locator) primarily in that URI is a mechanism for a unique name that follows a particular syntax, but itself may not indicate where the resource is. Generally URLs are expected to be used on the web for the HTTP protocol, though for asdf, this isn’t necessarily the case as mentioned next.",
+      "relevance_score": 0.15429981,
       "matched_queries": [
-        "What empirical studies measure the impact of generative AI tools (e.g., GitHub Copilot) on software development productivity?"
+        "Are 'asdf', 'qwer', and 'zxcv' commonly used in any specific context or field?"
       ]
     },
     {
       "source_id": "S4",
-      "title": "Has anyone had any success with evaluating the impact of using Generative AI tools such as GitHub's Copilot on the productivity or performance impact on developers? I see a lot of qualitative discussions about how developers say they are more productive, but how are you measuring that impact? | Gartner Peer Community",
-      "url": "https://www.gartner.com/peer-community/post/anyone-success-evaluating-impact-using-generative-ai-tools-such-github-s-copilot-productivity-performance-impact-developers",
-      "canonical_url": "https://www.gartner.com/peer-community/post/anyone-success-evaluating-impact-using-generative-ai-tools-such-github-s-copilot-productivity-performance-impact-developers",
-      "content": "# Has anyone had any success with evaluating the impact of using Generative AI tools such as GitHub's Copilot on the productivity or performance impact on developers? I see a lot of qualitative discussions about how developers say they are more productive, but how are you measuring that impact?\n\nInnovation & Emerging Trends\nSoftware Development\n\n###### Sort by:\n\nVP of IT in Manufacturing\na year ago",
-      "relevance_score": 0.9360767998734568,
+      "title": "draft-ietf-asdf-sdf-18 - Semantic Definition Format (SDF) for Data and Interactions of Things",
+      "url": "https://datatracker.ietf.org/doc/draft-ietf-asdf-sdf/18",
+      "canonical_url": "https://datatracker.ietf.org/doc/draft-ietf-asdf-sdf/18",
+      "content": "``` [...] ``` [...] Email authors   Email WG   IPR   References   Referenced by   Nits   Nits v3   Search email archive",
+      "relevance_score": 0.14447471,
       "matched_queries": [
-        "What empirical studies measure the impact of generative AI tools (e.g., GitHub Copilot) on software development productivity?"
+        "Are 'asdf', 'qwer', and 'zxcv' commonly used in any specific context or field?"
       ]
     },
     {
       "source_id": "S5",
-      "title": "Gen AI Impact: 56% Faster Dev Tasks · Cut The SaaS",
-      "url": "https://cut-the-saas.com/ai/generative-ai-impact-on-developers-increased-productivity-and-faster-task-completion",
-      "canonical_url": "https://cut-the-saas.com/ai/generative-ai-impact-on-developers-increased-productivity-and-faster-task-completion",
-      "content": "All takes →\n\n The Best AI Transcription Tools in 2026: What Actually Gets the Words Right\n The Best AI Video Editors in 2026: What Actually Speeds Up the Edit\n The Best AI Video Generators in 2026: What Actually Produces Usable Video\n The Best AI Voice Agents in 2026: What Actually Holds a Conversation\n The Best AI Voice Generators in 2026: What Actually Sounds Human\n The Best AI Website Builders in 2026: What Actually Ships a Site",
-      "relevance_score": 0.9300295636607424,
+      "title": "Data set encryption | z/OS 3.2.0",
+      "url": "https://www.ibm.com/docs/en/zos/3.2.0?topic=sets-data-set-encryption",
+      "canonical_url": "https://www.ibm.com/docs/en/zos/3.2.0?topic=sets-data-set-encryption",
+      "content": "should only be used for data decryption operations. In this case, the access methods will allow access to an encrypted data set when open for input. However, an attempt to open for any type of output will fail with a unique error code describing the failure: [...] 3.   From the data class that applies to the current DD statement.Note: The REFDD and LIKE JCL DD statement keywords do not cause a key label from the data set referred to be used when allocating a new data set. [...] SMF records can be used to view activity over a period of time. This information can be valuable when evaluating which basic and large format data sets may be eligible for converting to encrypted basic and large format data sets. DCOLLECT records may also be used for some of this determination. This section describes fields within SMF Type 14, SMF Type 15, and SMF Type 42-6 records that can help you identify whether your data sets would be candidates for data set encryption based on the list of",
+      "relevance_score": 0.055397574,
       "matched_queries": [
-        "What empirical studies measure the impact of generative AI tools (e.g., GitHub Copilot) on software development productivity?"
+        "Are 'asdf', 'qwer', and 'zxcv' commonly used in any specific context or field?"
       ]
     },
     {
       "source_id": "S6",
-      "title": "CodeRabbit’s \"State of AI vs Human Code Generation\" Report Finds That AI-Written Code Produces ~ 1.7x More Issues Than Human Code",
-      "url": "https://finance.yahoo.com/news/coderabbit-state-ai-vs-human-160000111.html",
-      "canonical_url": "https://finance.yahoo.com/news/coderabbit-state-ai-vs-human-160000111.html",
-      "content": "\"These findings reinforce what many engineering teams have sensed throughout 2025,\" said David Loker, Director of AI, CodeRabbit. \"AI coding tools dramatically increase output, but they also introduce predictable, measurable weaknesses that organizations must actively mitigate.\" [...] AI-generated PRs contain ~1.7x more issues on average than human-written PRs.\n Critical and major defects are up to 1.7x higher in AI-authored changes.\n Logic and correctness issues rise 75%, including business logic errors, misconfigurations, and unsafe control flow.\n Security vulnerabilities rise 1.5–2x, especially improper password handling and insecure object references.\n Code readability problems increase more than 3x, with elevated naming and formatting inconsistencies. [...] maintainability, security, and performance – compared to human-authored code. The report can be downloaded here.",
-      "relevance_score": 0.953557,
+      "title": "The QWERTY Effect: How typing shapes word meanings ...",
+      "url": "https://www.casasanto.com/papers/CasasantoJasminBrookshireGijssels_CogSci_2014.pdf",
+      "canonical_url": "https://www.casasanto.com/papers/CasasantoJasminBrookshireGijssels_CogSci_2014.pdf",
+      "content": "on SAMs). As in Experiment 1, we computed the RSA for each word in the corpus: [Left-hand letters: (q, w, e, r, t, a, s, d, f, g, z, x, c, v, b); Right-hand letters: (y, u, i, o, p, h, j, k, l, ç, n, m, -)]. Diacritics were stripped from the letters because, on the 297 Portuguese keyboard, accented letters do not have their own keys. Nineteen of the words had hyphens, which were treated as right-side letters due to the hyphen’s placement on the Portuguese keyboard. In a simple regression, RSA [...] o, p, h, j, k, l, m n) and subtracting the number from the left side (q, w, e, r, t, a, s, d, f, g, z, x, c, v, b; [RSA=(# right-side letters) - (# left-side letters)]). Only the Valence scores were of interest, so Arousal and Dominance scores were not analyzed. For each of the corpora analyzed in Experiments 1-3 here, we report three analyses. For the sake of completeness, we first report the relationship between Valence and RSA in a simple linear regression model including random intercepts [...] it to two new languages (Portuguese and German), and show that the effect is mediated by space-valence associations encoded at the level of individual letters. Finally, we show that QWERTY appears to be influencing the names American parents give their children. Together, these experiments demonstrate the generality of the QWERTY effect, and inform our theories of how people’s bodily interactions with a cultural artifact can change the way they use language. Keywords: QWERTY effect; Space;",
+      "relevance_score": 0.17549601,
       "matched_queries": [
-        "How does AI-generated code compare to human-written code in terms of quality metrics (e.g., bugs, security vulnerabilities, maintainability)?"
+        "Is there any cultural or linguistic significance to the sequence 'asdf qwer zxcv'?"
       ]
     },
     {
       "source_id": "S7",
-      "title": "AI Code Quality Crisis 2026: Engineering Leader Guide",
-      "url": "https://www.ofashandfire.com/blog/ai-generated-code-quality-crisis",
-      "canonical_url": "https://www.ofashandfire.com/blog/ai-generated-code-quality-crisis",
-      "content": "Leading organizations track AI-specific quality metrics:\n\n Percentage of code that is AI-generated versus human-written\n Code churn rates for AI-generated versus manual code\n Bug rates attributed to AI-generated code\n Time-to-fix for issues in AI-generated versus manual code\n Code review cycle time for AI-assisted pull requests\n Technical debt accumulation trends [...] Skip to content\n\nOf Ash and Fire Logo\n\nStart Project\n\nHome>Blog>AI Code Quality Crisis 2026: Engineering Leader Guide\n\n# AI Code Quality Crisis 2026: Engineering Leader Guide\n\nAI-assisted code has 1.7x more issues than human-written code. Strategies for managing AI code quality, reducing debt, and maintaining standards.\n\nTL;DR\n\n## Key Takeaways [...] ## Solutions: Managing AI-Generated Code Quality\n\nThe AI code quality crisis is real, but it's not insurmountable. Organizations that have successfully integrated AI coding tools while maintaining quality have implemented systematic approaches to manage the risks.\n\n### Establish AI-Specific Code Review Standards\n\nAI-generated code requires different review criteria than human-written code. Effective organizations have developed AI coding standards and guidelines that specify:",
-      "relevance_score": 0.93206495,
+      "title": "Asdf: A Compiler for Qwerty, a Basis-Oriented Quantum ...",
+      "url": "https://www.osti.gov/servlets/purl/3002249",
+      "canonical_url": "https://www.osti.gov/servlets/purl/3002249",
+      "content": "1 “Asdf” is a keyboard pun on “Qwerty.” The backbone of Asdf is a runtime that retrieves the Python AST (abstract syntax tree)  and type checks it to enforce quantum semantics and prevent violation of the pos-tulates of quantum computation. Type checking Qwerty’s quantum constructs could result in exponential runtime, but we present an efficient type checker that uses quantum basis factorization to avoid this pitfall. Because of the nature of quantum algorithm expression in Qwerty, the Qwerty [...] Q# Asdf (No Opt) Asdf (Opt) create inv.\ncreate inv.\ncreate inv.\nB–V 5 8 3 3 0 0 D–J 4 4 2 2 0 0 Grover 6 4 5 16 0 0 Period 12 16 4 4 0 0 Simon 4 4 7 7 0 0 for the QIR Base Profile, but also that Asdf preserves sound-ness by still emitting callables when necessary (e.g., when inlining is disabled). [...] In a comparison with the output of circuit-oriented com-pilers on hand-coded programs, Asdf has been shown to produce high-quality code across a set of well-known quan-tum algorithms. Future upgrades to Asdf should guarantee optimizations that are necessary for hardware targets with limited classical capability, such as inlining, and implement language features that support more physics-focused appli-cations, such as Hamiltonian simulation.",
+      "relevance_score": 0.17380677,
       "matched_queries": [
-        "How does AI-generated code compare to human-written code in terms of quality metrics (e.g., bugs, security vulnerabilities, maintainability)?"
+        "Is there any cultural or linguistic significance to the sequence 'asdf qwer zxcv'?"
       ]
     },
     {
       "source_id": "S8",
-      "title": "Does AI-Generated Code Reduce the Need for Testing, or Demand More? - Software Testing and Development Company",
-      "url": "https://shiftasia.com/column/does-ai-generated-code-reduce-the-need-for-testing-or-demand-more",
-      "canonical_url": "https://shiftasia.com/column/does-ai-generated-code-reduce-the-need-for-testing-or-demand-more",
-      "content": "A 2026 statistic worth highlighting: 58% of developers report trusting AI output without testing it. Reviewers fall into the “looks good to me” pattern. Code that is cleanly formatted and thoroughly commented receives less scrutiny, not more. AI-generated code carries an authority bias that human-written code does not.\n\n### 7. Debugging Costs Erase Productivity Gains [...] The weight of 2025–2026 evidence points consistently in one direction. Volume is up. Defects per unit are up. Security findings are up. Test maintenance burden is up. Developer trust in AI output is up faster than the quality of that output justifies. [...] A May 2026 report from The Register, citing fresh enterprise survey data, found that 61% of organizational code is now AI-generated or AI-assisted. In a similar study, 70% of respondents said test suite maintenance is now a bigger burden than writing code itself. That inverts the entire economics of software delivery.",
-      "relevance_score": 0.91137725,
+      "title": "Letter frequency - Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Letter_frequency",
+      "canonical_url": "https://en.wikipedia.org/wiki/Letter_frequency",
+      "content": "Herbert S. Zim, in his classic introductory cryptography text Codes and Secret Writing, gives the English letter frequency sequence as \"ETAON RISHD LFCMU GYPWB VKJXZQ\", the most common letter pairs as \"TH HE AN RE ER IN ON AT ND ST ES EN OF TE ED OR TI HI AS TO\", and the most common doubled letters as \"LL EE SS OO TT FF RR NN PP CC\". Different ways of counting can produce somewhat different orders. [...] Letter frequency is the number of times letters \"Letter (alphabet)\") of the alphabet appear on average in written language. Letter frequency analysis dates back to the Arab mathematician Al-Kindi (c. AD 801–873), who formally developed the method to break ciphers. Letter frequency analysis gained importance in Europe with the development of movable type in AD 1450, wherein one must estimate the amount of type required for each letterform. Linguists use letter frequency analysis as a rudimentary [...] The use of letter frequencies and frequency analysis plays a fundamental role in cryptograms and several word puzzle games, including hangman \"Hangman (game)\"), Scrabble, Wordle and the television game show Wheel of Fortune \"Wheel of Fortune (American game show)\"). One of the earliest descriptions in classical literature of applying the knowledge of English letter frequency to solving a cryptogram is found in Edgar Allan Poe's famous story \"The Gold-Bug\", where the method is successfully",
+      "relevance_score": 0.13435538,
       "matched_queries": [
-        "How does AI-generated code compare to human-written code in terms of quality metrics (e.g., bugs, security vulnerabilities, maintainability)?"
+        "Is there any cultural or linguistic significance to the sequence 'asdf qwer zxcv'?"
       ]
     }
   ],
   "critical_analysis": {
-    "overall_assessment": "The available evidence shows mixed impacts of generative AI on software engineering, with consistent reports of both productivity gains and quality concerns. However, most evidence comes from industry reports rather than rigorous academic studies, and there are significant gaps in long-term and labor market impact research.",
+    "overall_assessment": "The supplied sources are highly fragmented and do not directly address the research question 'asdf qwer zxcv random words.' The sources discuss various unrelated topics, including internet slang, keyboard layouts, quantum computing, and data encryption, but none provide meaningful insights into the specific sequence of random words in the research question. The evidence is insufficient to draw any conclusions relevant to the query.",
     "findings": [
       {
-        "claim": "AI coding tools dramatically increase output but also introduce predictable, measurable weaknesses that organizations must actively mitigate.",
-        "source_ids": [
-          "S6",
-          "S7",
-          "S8"
-        ],
-        "evidence_summary": "Multiple sources report increased output alongside quality concerns, with specific metrics provided.",
-        "confidence": "high",
-        "limitations": "Most evidence comes from industry reports rather than peer-reviewed studies."
-      },
-      {
-        "claim": "AI-generated code has 1.7x more issues than human-written code.",
-        "source_ids": [
-          "S6",
-          "S7"
-        ],
-        "evidence_summary": "Reported in multiple industry studies with consistent metrics.",
-        "confidence": "medium",
-        "limitations": "Lack of methodological details about how issues were measured."
-      },
-      {
-        "claim": "There is a lack of empirical evidence on productivity from industrial studies.",
+        "claim": "The term 'ASDF' is a sequence of letters used in online communication to express excitement, frustration, or confusion, without having a specific meaning.",
         "source_ids": [
           "S1"
         ],
-        "evidence_summary": "Explicitly stated in source discussing the need for more research.",
-        "confidence": "high",
-        "limitations": "Statement about evidence gaps rather than a finding."
-      },
-      {
-        "claim": "AI tools may influence the software development labor market by potentially reducing demand for certain programming skills while creating new opportunities.",
-        "source_ids": [
-          "S3"
-        ],
-        "evidence_summary": "Speculative discussion without empirical support in the provided sources.",
-        "confidence": "low",
-        "limitations": "Presented as potential impact rather than demonstrated effect."
-      },
-      {
-        "claim": "70% of respondents said test suite maintenance is now a bigger burden than writing code itself with AI assistance.",
-        "source_ids": [
-          "S8"
-        ],
-        "evidence_summary": "Enterprise survey data cited, though methodology not detailed.",
+        "evidence_summary": "S1 describes 'ASDF' as originating from the first four keys on the left side of a standard keyboard and discusses its usage in internet slang.",
         "confidence": "medium",
-        "limitations": "Self-reported data without verification of actual practices."
-      }
-    ],
-    "contradictions": [
-      {
-        "topic": "Productivity impact of AI tools",
-        "conflicting_claims": [
-          "AI tools enhance productivity by automating repetitive software engineering tasks",
-          "Debugging costs erase productivity gains"
-        ],
-        "source_ids": [
-          "S1",
-          "S8"
-        ],
-        "possible_explanation": "The sources may be measuring different aspects of productivity or have different time horizons (short-term vs. long-term impacts)."
+        "limitations": "The source does not provide empirical evidence or citations to support its claims about 'ASDF.'"
       },
       {
-        "topic": "Code quality and testing practices",
-        "conflicting_claims": [
-          "AI-generated PRs contain ~1.7x more issues on average than human-written PRs",
-          "58% of developers report trusting AI output without testing it"
-        ],
+        "claim": "The term 'asdf' is used as the name of a tool in software development, and its naming is based on a keyboard pun.",
         "source_ids": [
-          "S6",
-          "S8"
+          "S2",
+          "S7"
         ],
-        "possible_explanation": "The first claim is based on empirical data while the second is based on developer self-reports, which may not reflect actual behavior."
+        "evidence_summary": "S2 discusses 'asdf' as the name of a tool and mentions its disadvantages for non-QWERTY keyboard users. S7 explicitly states that 'Asdf' is a keyboard pun on 'Qwerty.'",
+        "confidence": "high",
+        "limitations": "Both sources focus on software development contexts and do not address broader linguistic or cultural implications."
+      },
+      {
+        "claim": "The QWERTY keyboard layout influences word meanings and language use.",
+        "source_ids": [
+          "S6"
+        ],
+        "evidence_summary": "S6 presents experimental evidence showing that the QWERTY effect influences word valence and space-valence associations in multiple languages.",
+        "confidence": "high",
+        "limitations": "The study focuses on specific linguistic phenomena and does not directly address the term 'ASDF.'"
       }
     ],
+    "contradictions": [],
     "uncertain_claims": [
-      "The net effect of productivity gains versus quality costs",
-      "How AI tools are transforming traditional software engineering roles",
-      "Whether AI tools are lowering barriers to entry for new programmers",
-      "The extent to which organizations are successfully managing AI code quality",
-      "The generalizability of findings across different development contexts"
+      "The origin and meaning of 'qwer' and 'zxcv' as sequences of letters.",
+      "The cultural or linguistic significance of combining 'asdf,' 'qwer,' and 'zxcv' in a single phrase."
     ],
     "research_gaps": [
-      "Long-term effects on developer skills and productivity",
-      "Impact on software development labor markets",
-      "Comparative studies across different developer populations",
-      "Effects of training and proficiency with AI tools",
-      "Comprehensive cost-benefit analyses including debugging and maintenance costs"
+      "What is the cultural or linguistic significance of the sequence 'asdf qwer zxcv'?",
+      "Are there documented uses of 'qwer' and 'zxcv' in internet slang or other contexts?",
+      "How do different keyboard layouts influence the interpretation or usage of sequences like 'asdf qwer zxcv'?"
     ]
   }
 }

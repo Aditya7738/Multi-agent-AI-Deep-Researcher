@@ -68,92 +68,166 @@ def create_research_agent() -> Agent:
         max_iter=1,
     )
 
+# A single term can be legitimate; multiple sequences together
+# are a strong signal that the input is not a meaningful question.
+_KEYBOARD_SEQUENCES = {
+    "asdf",
+    "qwer",
+    "zxcv",
+    "hjkl",
+    "poiuy",
+    "lkjh",
+    "mnbv",
+    "asdfgh",
+    "qwerty",
+    "zxcvbn",
+}
 
 def is_valid_research_question(question: str) -> tuple[bool, str]:
-    """Validate a research question locally without API calls."""
+    """Validate research input locally before making any API calls."""
 
-    question = question.strip()
-
-    if not question:
+    if not isinstance(question, str) or not question.strip():
         return False, "Please enter a research question."
 
-    if len(question) < 15:
-        return False, ("Your question is too short. Please provide more detail.")
-
-    # Extract alphabetic words.
+    question = question.strip()
     words = re.findall(r"[a-zA-Z]+", question.lower())
 
-    if len(words) < 3:
-        return False, (
-            "Please enter a meaningful research question containing "
-            "at least three words."
+    if len(question) < 15 or len(words) < 3:
+        return False, "Please enter a specific, meaningful research question."
+
+    # Detect multiple keyboard sequences, e.g.:
+    # "asdf qwer zxcv random words"
+    keyboard_matches = {
+        word for word in words if word in _KEYBOARD_SEQUENCES
+    }
+
+    if len(keyboard_matches) >= 2:
+        return (
+            False,
+            "Your input appears to contain random keyboard sequences. "
+            "Please enter a meaningful research question.",
         )
 
-    # Reject extremely long, unbroken alphabetic strings.
-    # These are unlikely to be ordinary research-question text.
+    # Reject tokens that look like random character strings.
+    suspicious_words = 0
+
     for word in words:
         if len(word) >= 30:
-            return False, (
-                "Your input appears to contain random text. "
-                "Please enter a meaningful research question."
-            )
+            return False, "Please remove unusually long random text."
 
-    # Reject excessive numbers and symbols.
-    alphanumeric_chars = [char for char in question if char.isalnum()]
-
-    alphabetic_chars = [char for char in question if char.isalpha()]
-
-    if not alphanumeric_chars:
-        return False, "Please enter a meaningful research question."
-
-    if len(alphabetic_chars) / len(alphanumeric_chars) < 0.5:
-        return False, (
-            "Your input contains too many numbers or symbols. "
-            "Please enter a research question."
-        )
-
-    # Detect suspiciously long words with unusual consonant patterns.
-    suspicious_words = []
-
-    for word in words:
         if len(word) >= 10:
-            vowel_count = sum(1 for char in word if char in "aeiouy")
+            vowel_ratio = sum(
+                char in "aeiou" for char in word
+            ) / len(word)
 
-            vowel_ratio = vowel_count / len(word)
+            if vowel_ratio < 0.15:
+                suspicious_words += 1
 
-            has_unusual_consonant_cluster = bool(
-                re.search(r"[bcdfghjklmnpqrstvwxyz]{5,}", word)
-            )
+            if re.search(r"(.)\1{4,}", word):
+                suspicious_words += 1
 
-            has_excessive_repetition = bool(re.search(r"(.)\1{3,}", word))
-
-            if (
-                vowel_ratio < 0.15
-                or has_unusual_consonant_cluster
-                or has_excessive_repetition
-            ):
-                suspicious_words.append(word)
-
-    # Require multiple suspicious words before rejecting based
-    # on these less conclusive word-level patterns.
-    if len(suspicious_words) >= 2:
-        return False, (
+    if suspicious_words >= 2:
+        return (
+            False,
             "Your input appears to contain random text. "
-            "Please enter a meaningful research question."
+            "Please enter a meaningful research question.",
         )
 
-    # Reject excessive repetition of words.
-    if len(words) >= 4:
-        counts = Counter(words)
-        most_common_count = counts.most_common(1)[0][1]
+    # Reject repeated-word spam.
+    if words:
+        most_common_count = max(
+            words.count(word) for word in set(words)
+        )
 
         if most_common_count / len(words) > 0.6:
-            return False, (
-                "Your question contains too much repetition. " "Please rephrase it."
-            )
+            return False, "Please enter a meaningful research question."
 
     return True, ""
 
+# def is_valid_research_question(question: str) -> tuple[bool, str]:
+#     """Validate a research question locally without API calls."""
+
+#     question = question.strip()
+
+#     if not question:
+#         return False, "Please enter a research question."
+
+#     if len(question) < 15:
+#         return False, ("Your question is too short. Please provide more detail.")
+
+#     # Extract alphabetic words.
+#     words = re.findall(r"[a-zA-Z]+", question.lower())
+
+#     if len(words) < 3:
+#         return False, (
+#             "Please enter a meaningful research question containing "
+#             "at least three words."
+#         )
+
+#     # Reject extremely long, unbroken alphabetic strings.
+#     # These are unlikely to be ordinary research-question text.
+#     for word in words:
+#         if len(word) >= 30:
+#             return False, (
+#                 "Your input appears to contain random text. "
+#                 "Please enter a meaningful research question."
+#             )
+
+#     # Reject excessive numbers and symbols.
+#     alphanumeric_chars = [char for char in question if char.isalnum()]
+
+#     alphabetic_chars = [char for char in question if char.isalpha()]
+
+#     if not alphanumeric_chars:
+#         return False, "Please enter a meaningful research question."
+
+#     if len(alphabetic_chars) / len(alphanumeric_chars) < 0.5:
+#         return False, (
+#             "Your input contains too many numbers or symbols. "
+#             "Please enter a research question."
+#         )
+
+#     # Detect suspiciously long words with unusual consonant patterns.
+#     suspicious_words = []
+
+#     for word in words:
+#         if len(word) >= 10:
+#             vowel_count = sum(1 for char in word if char in "aeiouy")
+
+#             vowel_ratio = vowel_count / len(word)
+
+#             has_unusual_consonant_cluster = bool(
+#                 re.search(r"[bcdfghjklmnpqrstvwxyz]{5,}", word)
+#             )
+
+#             has_excessive_repetition = bool(re.search(r"(.)\1{3,}", word))
+
+#             if (
+#                 vowel_ratio < 0.15
+#                 or has_unusual_consonant_cluster
+#                 or has_excessive_repetition
+#             ):
+#                 suspicious_words.append(word)
+
+#     # Require multiple suspicious words before rejecting based
+#     # on these less conclusive word-level patterns.
+#     if len(suspicious_words) >= 2:
+#         return False, (
+#             "Your input appears to contain random text. "
+#             "Please enter a meaningful research question."
+#         )
+
+#     # Reject excessive repetition of words.
+#     if len(words) >= 4:
+#         counts = Counter(words)
+#         most_common_count = counts.most_common(1)[0][1]
+
+#         if most_common_count / len(words) > 0.6:
+#             return False, (
+#                 "Your question contains too much repetition. " "Please rephrase it."
+#             )
+
+#     return True, ""
 
 def research(question: str) -> str:
     """Search the web once and summarize the retrieved evidence."""

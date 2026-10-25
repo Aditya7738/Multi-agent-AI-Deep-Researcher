@@ -1,74 +1,12 @@
 {
-  "research_question": "How is generative AI changing software engineering productivity, code quality, and employment?",
-  "observations": [
-    {
-      "label": "Logic and Correctness Issues",
-      "group": "Code Quality",
-      "value": 75.0,
-      "unit": "%",
-      "source_id": "S6",
-      "evidence_text": "Logic and correctness issues rise 75%, including business logic errors, misconfigurations, and unsafe control flow."
-    },
-    {
-      "label": "Security Vulnerabilities in AI-Generated Code",
-      "group": "Code Quality",
-      "value": 1.5,
-      "unit": "x",
-      "source_id": "S6",
-      "evidence_text": "Security vulnerabilities rise 1.5–2x, especially improper password handling and insecure object references."
-    },
-    {
-      "label": "Developers Trusting AI Output Without Testing",
-      "group": "Developer Behavior",
-      "value": 58.0,
-      "unit": "%",
-      "source_id": "S8",
-      "evidence_text": "A 2026 statistic worth highlighting: 58% of developers report trusting AI output without testing it."
-    },
-    {
-      "label": "AI-Generated or Assisted Code in Organizations",
-      "group": "Code Production",
-      "value": 61.0,
-      "unit": "%",
-      "source_id": "S8",
-      "evidence_text": "61% of organizational code is now AI-generated or AI-assisted."
-    },
-    {
-      "label": "Test Suite Maintenance Burden",
-      "group": "Testing",
-      "value": 70.0,
-      "unit": "%",
-      "source_id": "S8",
-      "evidence_text": "70% of respondents said test suite maintenance is now a bigger burden than writing code itself."
-    }
-  ],
+  "research_question": "asdf qwer zxcv random words",
+  "observations": [],
   "extraction_summary": {
     "sources_considered": 8,
-    "candidates_returned": 9,
-    "accepted": 5,
-    "rejected": 4,
-    "rejected_observations": [
-      {
-        "label": "Issue Rate in AI-Generated Code",
-        "source_id": "S6",
-        "reason": "Numeric value does not appear in the excerpt."
-      },
-      {
-        "label": "Critical Defects in AI-Generated Code",
-        "source_id": "S6",
-        "reason": "Numeric value does not appear in the excerpt."
-      },
-      {
-        "label": "Readability Issues in AI-Generated Code",
-        "source_id": "S6",
-        "reason": "Numeric value does not appear in the excerpt."
-      },
-      {
-        "label": "Issue Rate in AI-Assisted Code",
-        "source_id": "S7",
-        "reason": "Numeric value does not appear in the excerpt."
-      }
-    ],
-    "message": "Verified source excerpts are available for visualization."
+    "candidates_returned": 0,
+    "accepted": 0,
+    "rejected": 0,
+    "rejected_observations": [],
+    "message": "No numerical observations passed validation. The visualizer should skip chart generation."
   }
 }

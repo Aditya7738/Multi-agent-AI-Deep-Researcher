@@ -1,116 +1,61 @@
 {
-  "research_question": "How is generative AI changing software engineering productivity, code quality, and employment?",
+  "research_question": "asdf qwer zxcv random words",
   "initial_verdict": "needs_revision",
   "final_verdict": "needs_revision",
   "correction_attempts": 1,
   "max_correction_attempts": 1,
   "final_issues": [
     {
-      "claim": "AI-generated code contains more issues than human-written code, including logic errors, security vulnerabilities, and readability problems [S7]",
+      "claim": "The sequence originates from QWERTY keyboard's left-hand home row and expresses non-specific emotions in digital communication [S1].",
       "status": "unsupported",
-      "explanation": "The claim is supported by the evidence from S7, which states that AI-generated code has 1.7x more issues than human-written code.",
+      "explanation": "The claim is supported by the evidence from S1, which confirms the origin and usage of 'ASDF' as described.",
       "source_ids": [
-        "S7"
+        "S1"
       ],
-      "evidence_quote": "AI-assisted code has 1.7x more issues than human-written code. Strategies for managing AI code quality, reducing debt, and maintaining standards."
+      "evidence_quote": "The term 'ASDF' is a sequence of letters used in online communication to express excitement, frustration, or confusion, without having a specific meaning. It originates from the first four keys on the left side of a standard keyboard and has become a part of internet slang."
     },
     {
-      "claim": "Testing and debugging AI-generated code may increase the overall maintenance burden, though specific statistics are not available [S8]",
+      "claim": "The QWERTY layout affects word valence across multiple languages [S6].",
       "status": "unsupported",
-      "explanation": "The claim is supported by the evidence from S8, which indicates an increase in test maintenance burden with AI-generated code.",
+      "explanation": "The claim is supported by the evidence from S6, which discusses the QWERTY effect and its impact on language use.",
       "source_ids": [
-        "S8"
-      ],
-      "evidence_quote": "The weight of 2025–2026 evidence points consistently in one direction. Volume is up. Defects per unit are up. Security findings are up. Test maintenance burden is up. Developer trust in AI output is up faster than the quality of that output justifies."
-    },
-    {
-      "claim": "Speculative discussions suggest AI tools may influence the software development labor market, though empirical evidence is lacking [S3]",
-      "status": "unsupported",
-      "explanation": "The claim is supported by the evidence from S3, which discusses potential impacts on the labor market without providing empirical evidence.",
-      "source_ids": [
-        "S3"
-      ],
-      "evidence_quote": "AI tools like Copilot may influence the software development labor market by:\n\n    Potentially reducing the demand for certain programming skills\n    Creating new opportunities for developers who can effectively leverage AI tools\n    Possibly lowering barriers to entry for new programmers"
-    },
-    {
-      "claim": "Some sources claim AI tools enhance productivity by automating repetitive tasks [S1], while others argue debugging costs may offset these gains [S8]",
-      "status": "unsupported",
-      "explanation": "The claim is supported by the evidence from S1 and S8, which present contrasting views on productivity gains versus debugging costs.",
-      "source_ids": [
-        "S1",
-        "S8"
-      ],
-      "evidence_quote": "These tools enhance productivity by automating repetitive software engineering tasks (Ulfsnes et al., 2024), [...] appealing because of its promised productivity, there is a lack of empirical evidence on productivity from industrial studies."
-    },
-    {
-      "claim": "While empirical data shows AI-generated code contains more issues [S7], self-reports indicate developers may trust AI output without adequate testing [S8]",
-      "status": "unsupported",
-      "explanation": "The claim is supported by the evidence from S7 and S8, which show higher issues in AI-generated code and developer trust without adequate testing.",
-      "source_ids": [
-        "S7",
-        "S8"
-      ],
-      "evidence_quote": "A 2026 statistic worth highlighting: 58% of developers report trusting AI output without testing it. Reviewers fall into the “looks good to me” pattern. Code that is cleanly formatted and thoroughly commented receives less scrutiny, not more. AI-generated code carries an authority bias that human-written code does not."
-    },
-    {
-      "claim": "Some organizations are beginning to track AI-specific quality metrics, such as code churn rates and time-to-fix for AI-generated code [S7]",
-      "status": "unsupported",
-      "explanation": "The claim is supported by the evidence from S7, which lists AI-specific quality metrics tracked by leading organizations.",
-      "source_ids": [
-        "S7"
-      ],
-      "evidence_quote": "Leading organizations track AI-specific quality metrics:\n\n Percentage of code that is AI-generated versus human-written\n Code churn rates for AI-generated versus manual code\n Bug rates attributed to AI-generated code\n Time-to-fix for issues in AI-generated versus manual code\n Code review cycle time for AI-assisted pull requests\n Technical debt accumulation trends"
-    },
-    {
-      "claim": "The disproportionate increase in testing burden relative to coding productivity gains may invert traditional software economics [S8]",
-      "status": "unsupported",
-      "explanation": "The claim is supported by the evidence from S8, which indicates a shift in the economics of software delivery due to increased testing burden.",
-      "source_ids": [
-        "S8"
-      ],
-      "evidence_quote": "In a similar study, 70% of respondents said test suite maintenance is now a bigger burden than writing code itself. That inverts the entire economics of software delivery."
-    },
-    {
-      "claim": "AI tools appear to create a bimodal distribution of code quality, increasing both high-quality human-reviewed output and low-quality AI-generated defects [S6, S7]",
-      "status": "unsupported",
-      "explanation": "The claim is supported by the evidence from S6 and S7, which detail the increase in both output and defects with AI-generated code.",
-      "source_ids": [
-        "S6",
-        "S7"
-      ],
-      "evidence_quote": "AI-generated PRs contain ~1.7x more issues on average than human-written PRs.\n Critical and major defects are up to 1.7x higher in AI-authored changes.\n Logic and correctness issues rise 75%, including business logic errors, misconfigurations, and unsafe control flow.\n Security vulnerabilities rise 1.5–2x, especially improper password handling and insecure object references.\n Code readability problems increase more than 3x, with elevated naming and formatting inconsistencies."
-    },
-    {
-      "claim": "Most findings rely on industry reports rather than peer-reviewed studies, limiting their reliability [S6, S7, S8]",
-      "status": "unsupported",
-      "explanation": "The claim is not directly supported by the provided sources, which do not explicitly state the reliance on industry reports over peer-reviewed studies.",
-      "source_ids": [
-        "S6",
-        "S7",
-        "S8"
-      ],
-      "evidence_quote": ""
-    },
-    {
-      "claim": "Metrics for measuring productivity and quality are inconsistently defined across studies [S1, S6]",
-      "status": "unsupported",
-      "explanation": "The claim is not directly supported by the provided sources, which do not discuss inconsistencies in metric definitions.",
-      "source_ids": [
-        "S1",
         "S6"
       ],
+      "evidence_quote": "Together, these experiments demonstrate the generality of the QWERTY effect, and inform our theories of how people’s bodily interactions with a cultural artifact can change the way they use language. Keywords: QWERTY effect; Space;"
+    },
+    {
+      "claim": "The name may follow keyboard-pun conventions, though this is only explicitly stated in one source [S7].",
+      "status": "unsupported",
+      "explanation": "The claim is supported by the evidence from S7, which explicitly states that 'Asdf' is a keyboard pun on 'Qwerty'.",
+      "source_ids": [
+        "S7"
+      ],
+      "evidence_quote": "1 “Asdf” is a keyboard pun on “Qwerty.”"
+    },
+    {
+      "claim": "Usability challenges for non-QWERTY users are documented [S2].",
+      "status": "unsupported",
+      "explanation": "The claim is supported by the evidence from S2, which discusses the challenges faced by non-QWERTY users.",
+      "source_ids": [
+        "S2"
+      ],
+      "evidence_quote": "anecdotically, for other keyboard layouts, an alias would also be good. `qsdf` for me, on an AZERTY keyboard (damned French people /s)"
+    },
+    {
+      "claim": "No evidence documents 'qwer' or 'zxcv' as standalone terms.",
+      "status": "unsupported",
+      "explanation": "No evidence was found in the provided sources that documents 'qwer' or 'zxcv' as standalone terms.",
+      "source_ids": [],
       "evidence_quote": ""
     },
     {
-      "claim": "Findings may not apply to all developer populations or domains [S3]",
+      "claim": "No evidence confirms cultural recognition of the full sequence 'asdf qwer zxcv.'",
       "status": "unsupported",
-      "explanation": "The claim is supported by the evidence from S3, which acknowledges limitations in generalizability to different developer populations.",
-      "source_ids": [
-        "S3"
-      ],
-      "evidence_quote": "While the participant pool was diverse, studies with different developer populations would strengthen the generalizability of the findings."
+      "explanation": "No evidence was found in the provided sources that confirms cultural recognition of the full sequence 'asdf qwer zxcv'.",
+      "source_ids": [],
+      "evidence_quote": ""
     }
   ],
-  "final_summary": "The report contains several claims that are either unsupported or partially supported by the provided sources. Key issues include lack of direct evidence for some claims about productivity metrics and reliability of findings, while other claims about code quality and testing burden are supported by the sources. The report should be revised to clarify which claims are speculative and which are evidence-based.",
+  "final_summary": "The report contains several claims that are unsupported by the provided evidence, particularly regarding the cultural recognition and documentation of 'qwer' and 'zxcv' as standalone terms and the full sequence 'asdf qwer zxcv.' However, claims about the origin and usage of 'ASDF' and the QWERTY effect are supported by the evidence.",
   "report_status": "needs_review"
 }

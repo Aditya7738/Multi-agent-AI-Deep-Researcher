@@ -218,7 +218,7 @@ def generate_charts(observations: list[dict]) -> list[dict]:
 
         safe_unit = re.sub(r"[^a-z0-9]+", "_", unit_key).strip("_")
         chart_path = CHART_DIR / f"evidence_comparison_{safe_unit}.html"
-
+        
         figure = px.bar(
             unit_dataframe,
             x="label",
@@ -231,15 +231,28 @@ def generate_charts(observations: list[dict]) -> list[dict]:
                 "value": f"Reported value ({display_unit})",
                 "group": "Category",
             },
+            template="plotly_white",
+            color_discrete_sequence=[
+                "#2563EB",
+                "#F97316",
+                "#16A34A",
+                "#9333EA",
+                "#0891B2",
+                "#DB2777",
+            ],
         )
 
         figure.update_layout(
-            template="plotly_white",
+            plot_bgcolor="#FFFFFF",
+            paper_bgcolor="#FFFFFF",
+            font={"color": "#1F2937"},
             xaxis_title="Observation",
             yaxis_title=f"Reported value ({display_unit})",
             legend_title="Category",
             xaxis_tickangle=-25,
+            margin={"l": 60, "r": 30, "t": 80, "b": 120},
         )
+
 
         figure.write_html(
             str(chart_path),

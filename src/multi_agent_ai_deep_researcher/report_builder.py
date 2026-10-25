@@ -326,43 +326,75 @@ def build_bibliography(source_registry: dict[str, dict]) -> str:
     return "\n".join(lines)
 
 
+# def build_chart_section(charts: list[dict]) -> str:
+#     """Add links and HTML embeds only for approved charts."""
+#     if not charts:
+#         return (
+#             "## Validated Data Visualizations\n\n"
+#             "No chart passed the visualization manifest and file checks. "
+#             "No charts have been embedded in this report.\n"
+#         )
+
+#     sections = ["## Validated Data Visualizations", ""]
+
+#     for index, chart in enumerate(charts, start=1):
+#         title = str(chart.get("title", f"Chart {index}"))
+#         relative_path = chart["path"]
+#         chart_filename = Path(relative_path).name
+#         chart_url = relative_path.replace("\\", "/")
+
+#         source_ids = ", ".join(chart["source_ids"])
+#         units = ", ".join(str(unit) for unit in chart["units"])
+
+#         sections.extend(
+#             [
+#                 f"### {index}. {title}",
+#                 "",
+#                 (
+#                     f"- Observations: {chart['observation_count']}\n"
+#                     f"- Unit: {units}\n"
+#                     f"- Source IDs: {source_ids}\n"
+#                     f"- [Open chart: {chart_filename}]({chart_url})"
+#                 ),
+#                 "",
+#                 (
+#                     f'<iframe src="{html.escape(chart_url, quote=True)}" '
+#                     'width="100%" height="560" '
+#                     'style="border:0;" loading="lazy" '
+#                     f'title="{html.escape(title, quote=True)}"></iframe>'
+#                 ),
+#                 "",
+#             ]
+#         )
+
+#     return "\n".join(sections)
+
+
+
 def build_chart_section(charts: list[dict]) -> str:
-    """Add links and HTML embeds only for approved charts."""
+    """Create readable Markdown metadata for validated charts."""
+
     if not charts:
         return (
             "## Validated Data Visualizations\n\n"
-            "No chart passed the visualization manifest and file checks. "
-            "No charts have been embedded in this report.\n"
+            "No charts passed validation for this research run.\n"
         )
 
     sections = ["## Validated Data Visualizations", ""]
 
     for index, chart in enumerate(charts, start=1):
         title = str(chart.get("title", f"Chart {index}"))
-        relative_path = chart["path"]
-        chart_filename = Path(relative_path).name
-        chart_url = relative_path.replace("\\", "/")
-
-        source_ids = ", ".join(chart["source_ids"])
-        units = ", ".join(str(unit) for unit in chart["units"])
+        units = ", ".join(str(unit) for unit in chart.get("units", []))
+        source_ids = ", ".join(chart.get("source_ids", []))
 
         sections.extend(
             [
                 f"### {index}. {title}",
                 "",
-                (
-                    f"- Observations: {chart['observation_count']}\n"
-                    f"- Unit: {units}\n"
-                    f"- Source IDs: {source_ids}\n"
-                    f"- [Open chart: {chart_filename}]({chart_url})"
-                ),
-                "",
-                (
-                    f'<iframe src="{html.escape(chart_url, quote=True)}" '
-                    'width="100%" height="560" '
-                    'style="border:0;" loading="lazy" '
-                    f'title="{html.escape(title, quote=True)}"></iframe>'
-                ),
+                f"- Observations: {chart.get('observation_count', 0)}",
+                f"- Units: {units or 'Not specified'}",
+                f"- Source IDs: {source_ids or 'Not specified'}",
+                "- View the interactive chart in the Charts tab of the app.",
                 "",
             ]
         )

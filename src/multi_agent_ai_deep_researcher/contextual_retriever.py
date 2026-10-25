@@ -9,7 +9,7 @@ from urllib.parse import (
     urlsplit,
     urlunsplit,
 )
-
+from .cost_optimizer import optimize_queries
 from dotenv import load_dotenv
 from tavily import TavilyClient
 
@@ -159,22 +159,65 @@ def retrieve_sources(subqueries: list[str]) -> list[dict]:
         raise RuntimeError("TAVILY_API_KEY is missing from the .env file.")
 
     # Remove empty and repeated queries before spending credits.
-    unique_queries = []
-    seen_queries = set()
+    # unique_queries = []
+    # seen_queries = set()
 
-    for query in subqueries:
-        query = query.strip()
-        normalized_query = re.sub(r"\s+", " ", query).casefold()
+    # for query in subqueries:
+    #     query = query.strip()
+    #     normalized_query = re.sub(r"\s+", " ", query).casefold()
 
-        if normalized_query and normalized_query not in seen_queries:
-            unique_queries.append(query)
-            seen_queries.add(normalized_query)
+    #     if normalized_query and normalized_query not in seen_queries:
+    #         unique_queries.append(query)
+    #         seen_queries.add(normalized_query)
 
-    # Hard per-run limit.
-    unique_queries = unique_queries[:MAX_SEARCHES_PER_RUN]
+    # # Hard per-run limit.
+    # unique_queries = unique_queries[:MAX_SEARCHES_PER_RUN]
+
+    # if not unique_queries:
+    #     return []
+
+
+    # Optimize queries before creating a Tavily client or spending credits.
+    usage = _read_usage()
+    credits_remaining = max(
+        0,
+        MAX_MONTHLY_CREDITS - usage["credits_used"],
+    )
+
+    optimization = optimize_queries(
+        subqueries,
+        credits_remaining=credits_remaining,
+        credits_per_search=CREDITS_PER_SEARCH,
+        max_searches_per_run=MAX_SEARCHES_PER_RUN,
+    )
+
+    unique_queries = optimization["selected_queries"]
+
+    print("\nCOST OPTIMIZER")
+    print("=" * 40)
+    print(
+        f"Unique queries: "
+        f"{optimization['unique_queries_after_deduplication']}"
+    )
+    print(f"Selected searches: {len(unique_queries)}")
+    print(
+        f"Estimated credits required: "
+        f"{optimization['estimated_credits_required']}"
+    )
+    print(f"Credits remaining: {credits_remaining}")
+
+    for skipped in optimization["skipped_queries"]:
+        print(
+            f"Skipped query: {skipped['query']} "
+            f"({skipped['reason']})"
+        )
 
     if not unique_queries:
+        print("Cost Optimizer selected no searches.")
         return []
+
+
+    ###################################################################
 
     client = TavilyClient(api_key=api_key)
     unique_sources = {}
