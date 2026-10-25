@@ -1,13 +1,15 @@
 import os
-
 import re
-from collections import Counter
 
 from crewai import Agent, Crew, Process, Task
 from dotenv import load_dotenv
 from tavily import TavilyClient
 
 from .llm_config import get_llm
+
+# from collections import Counter
+
+
 
 load_dotenv()
 
@@ -68,6 +70,7 @@ def create_research_agent() -> Agent:
         max_iter=1,
     )
 
+
 # A single term can be legitimate; multiple sequences together
 # are a strong signal that the input is not a meaningful question.
 _KEYBOARD_SEQUENCES = {
@@ -83,6 +86,130 @@ _KEYBOARD_SEQUENCES = {
     "zxcvbn",
 }
 
+# Questions that explicitly request an unlimited or excessively broad scope.
+_BROAD_SCOPE_PATTERNS = (
+    r"\beverything\s+about\b",
+    r"\ball\s+about\b",
+    r"\btell\s+me\s+everything\b",
+    r"\bcover\s+everything\b",
+    r"\bcomplete\s+overview\s+of\b",
+    r"\beverything\s+there\s+is\s+to\s+know\b",
+)
+
+# Topics that are too general when submitted without a specific focus.
+_BROAD_TOPICS = {
+    "technology",
+    "tech",
+    "science",
+    "history",
+    "business",
+    "education",
+    "health",
+    "artificial intelligence",
+    "ai",
+}
+
+
+# def validate_research_scope(question: str) -> tuple[bool, str]:
+#     """Reject excessively broad research requests without using an API."""
+
+#     if not isinstance(question, str) or not question.strip():
+#         return False, "Please enter a research question."
+
+#     normalized = re.sub(r"\s+", " ", question.strip().lower())
+#     normalized = re.sub(r"[.!?]+$", "", normalized).strip()
+
+#     if any(re.search(pattern, normalized) for pattern in _BROAD_SCOPE_PATTERNS):
+#         return (
+#             False,
+#             "Your research question is too broad. Please narrow the scope. "
+#             "For example, specify a technology area, target group, "
+#             "time period, or outcome you want to investigate.",
+#         )
+
+#     # Remove common introductory phrases to detect a topic-only request.
+#     topic_only = re.sub(
+#         r"^(please\s+)?(tell\s+me\s+about|explain|describe|research|"
+#         r"investigate|study|analyze|analyse|what\s+is)\s+",
+#         "",
+#         normalized,
+#     ).strip()
+
+#     if topic_only in _BROAD_TOPICS:
+#         return (
+#             False,
+#             "Your research question is too broad. Please choose a "
+#             "specific aspect of the topic, such as its applications, "
+#             "benefits, risks, or impact on a particular group.",
+#         )
+
+#     return (
+#         True,
+#         "",
+#     )  # Questions that explicitly request an unlimited or excessively broad scope.
+
+
+def validate_research_scope(question: str) -> tuple[bool, str]:
+    """Reject excessively broad research requests without using an API."""
+
+    if not isinstance(question, str) or not question.strip():
+        return False, "Please enter a research question."
+
+    normalized = re.sub(r"\s+", " ", question.strip().lower())
+    normalized = re.sub(r"[.!?]+$", "", normalized).strip()
+
+    if any(re.search(pattern, normalized) for pattern in _BROAD_SCOPE_PATTERNS):
+        return (
+            False,
+            "Your research question is too broad. Please narrow the scope. "
+            "For example, specify a technology area, target group, "
+            "time period, or outcome you want to investigate.",
+        )
+
+    # Remove common introductory phrases to detect a topic-only request.
+    topic_only = re.sub(
+        r"^(please\s+)?(tell\s+me\s+about|explain|describe|research|"
+        r"investigate|study|analyze|analyse|what\s+is)\s+",
+        "",
+        normalized,
+    ).strip()
+
+    if topic_only in _BROAD_TOPICS:
+        return (
+            False,
+            "Your research question is too broad. Please choose a "
+            "specific aspect of the topic, such as its applications, "
+            "benefits, risks, or impact on a particular group.",
+        )
+
+    return True, ""
+
+
+_BROAD_SCOPE_PATTERNS = (
+    r"\beverything\s+about\b",
+    r"\ball\s+about\b",
+    r"\btell\s+me\s+everything\b",
+    r"\bcover\s+everything\b",
+    r"\bcomplete\s+overview\s+of\b",
+    r"\beverything\s+there\s+is\s+to\s+know\b",
+)
+
+# Topics that are too general when submitted without a specific focus.
+_BROAD_TOPICS = {
+    "technology",
+    "tech",
+    "science",
+    "history",
+    "business",
+    "education",
+    "health",
+    "artificial intelligence",
+    "ai",
+}
+
+
+
+
 def is_valid_research_question(question: str) -> tuple[bool, str]:
     """Validate research input locally before making any API calls."""
 
@@ -97,9 +224,7 @@ def is_valid_research_question(question: str) -> tuple[bool, str]:
 
     # Detect multiple keyboard sequences, e.g.:
     # "asdf qwer zxcv random words"
-    keyboard_matches = {
-        word for word in words if word in _KEYBOARD_SEQUENCES
-    }
+    keyboard_matches = {word for word in words if word in _KEYBOARD_SEQUENCES}
 
     if len(keyboard_matches) >= 2:
         return (
@@ -116,9 +241,7 @@ def is_valid_research_question(question: str) -> tuple[bool, str]:
             return False, "Please remove unusually long random text."
 
         if len(word) >= 10:
-            vowel_ratio = sum(
-                char in "aeiou" for char in word
-            ) / len(word)
+            vowel_ratio = sum(char in "aeiou" for char in word) / len(word)
 
             if vowel_ratio < 0.15:
                 suspicious_words += 1
@@ -135,14 +258,13 @@ def is_valid_research_question(question: str) -> tuple[bool, str]:
 
     # Reject repeated-word spam.
     if words:
-        most_common_count = max(
-            words.count(word) for word in set(words)
-        )
+        most_common_count = max(words.count(word) for word in set(words))
 
         if most_common_count / len(words) > 0.6:
             return False, "Please enter a meaningful research question."
 
     return True, ""
+
 
 # def is_valid_research_question(question: str) -> tuple[bool, str]:
 #     """Validate a research question locally without API calls."""
@@ -228,6 +350,7 @@ def is_valid_research_question(question: str) -> tuple[bool, str]:
 #             )
 
 #     return True, ""
+
 
 def research(question: str) -> str:
     """Search the web once and summarize the retrieved evidence."""

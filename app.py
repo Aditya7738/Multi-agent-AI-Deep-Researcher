@@ -6,6 +6,7 @@ from pathlib import Path
 
 import streamlit as st
 import streamlit.components.v1 as components
+import logging
 
 from src.multi_agent_ai_deep_researcher.query_planner import plan_research
 from src.multi_agent_ai_deep_researcher.contextual_retriever import (
@@ -23,6 +24,7 @@ from src.multi_agent_ai_deep_researcher.report_builder import (
 )
 from src.multi_agent_ai_deep_researcher.research_with_web import (
     is_valid_research_question,
+    validate_research_scope,
 )
 
 
@@ -658,11 +660,53 @@ run_clicked = st.button(
 #         st.exception(exc)
 
 
+# if run_clicked:
+#     st.session_state.pop("research_result", None)
+
+#     is_valid, validation_message = is_valid_research_question(
+#         question.strip()
+#     )
+
+#     if not is_valid:
+#         st.error(
+#             "The research workflow did not complete.\n\n"
+#             f"{validation_message}"
+#         )
+#     else:
+#         try:
+#             with st.spinner(
+#                 "Running your multi-agent research workflow..."
+#             ):
+#                 result = run_research_workflow(question.strip())
+
+#             st.session_state["research_result"] = result
+#             st.success("Research workflow completed.")
+
+#         except ValueError as exc:
+#             st.error(
+#                 "The research workflow did not complete.\n\n"
+#                 f"{exc}"
+#             )
+
+#         except Exception:
+#             logging.exception("Research workflow failed")
+#             st.error(
+#                 "The research workflow did not complete. "
+#                 "Please try again later."
+#             )
+
+
 if run_clicked:
     st.session_state.pop("research_result", None)
 
+    question_text = question.strip()
+
     is_valid, validation_message = is_valid_research_question(
-        question.strip()
+        question_text
+    )
+
+    is_specific, scope_message = validate_research_scope(
+        question_text
     )
 
     if not is_valid:
@@ -670,12 +714,19 @@ if run_clicked:
             "The research workflow did not complete.\n\n"
             f"{validation_message}"
         )
+
+    elif not is_specific:
+        st.warning(
+            "Please narrow your research question.\n\n"
+            f"{scope_message}"
+        )
+
     else:
         try:
             with st.spinner(
                 "Running your multi-agent research workflow..."
             ):
-                result = run_research_workflow(question.strip())
+                result = run_research_workflow(question_text)
 
             st.session_state["research_result"] = result
             st.success("Research workflow completed.")
@@ -692,7 +743,6 @@ if run_clicked:
                 "The research workflow did not complete. "
                 "Please try again later."
             )
-
 
 
 result = st.session_state.get("research_result")

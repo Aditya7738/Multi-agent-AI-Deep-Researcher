@@ -5,8 +5,12 @@ from crewai import Agent, Crew, Process, Task
 from pydantic import BaseModel, Field
 
 from .llm_config import get_llm
-from .research_with_web import is_valid_research_question
 
+# from .research_with_web import is_valid_research_question
+from .research_with_web import (
+    is_valid_research_question,
+    validate_research_scope,
+)
 
 MAX_SUBQUERIES = 4
 
@@ -57,10 +61,22 @@ def plan_research(question: str) -> list[str]:
     Invalid input is rejected locally before any LLM request.
     """
 
+    # is_valid, error_message = is_valid_research_question(question)
+
+    # if not is_valid:
+    #     raise ValueError(error_message)
+
+    # question = question.strip()
+
     is_valid, error_message = is_valid_research_question(question)
 
     if not is_valid:
         raise ValueError(error_message)
+
+    is_specific, scope_message = validate_research_scope(question)
+
+    if not is_specific:
+        raise ValueError(scope_message)
 
     question = question.strip()
 
