@@ -1,14 +1,12 @@
-
 import json
+import logging
 import subprocess
 import sys
 from pathlib import Path
 
 import streamlit as st
 import streamlit.components.v1 as components
-import logging
 
-from src.multi_agent_ai_deep_researcher.query_planner import plan_research
 from src.multi_agent_ai_deep_researcher.contextual_retriever import (
     retrieve_sources,
     search_budget_status,
@@ -19,6 +17,7 @@ from src.multi_agent_ai_deep_researcher.critical_analysis import (
 from src.multi_agent_ai_deep_researcher.data_visualization import (
     run_visualization,
 )
+from src.multi_agent_ai_deep_researcher.query_planner import plan_research
 from src.multi_agent_ai_deep_researcher.report_builder import (
     run_report_builder,
 )
@@ -26,7 +25,6 @@ from src.multi_agent_ai_deep_researcher.research_with_web import (
     is_valid_research_question,
     validate_research_scope,
 )
-
 
 PROJECT_ROOT = Path(__file__).resolve().parent
 PACKAGE_MODULE = "src.multi_agent_ai_deep_researcher"
@@ -80,14 +78,11 @@ def display_critical_analysis(analysis: dict) -> None:
                     source_ids = finding.get("source_ids", [])
                     if source_ids:
                         st.caption(
-                            "Supporting sources: "
-                            + ", ".join(map(str, source_ids))
+                            "Supporting sources: " + ", ".join(map(str, source_ids))
                         )
 
                 if finding.get("limitations"):
-                    st.caption(
-                        f"Limitations: {finding['limitations']}"
-                    )
+                    st.caption(f"Limitations: {finding['limitations']}")
 
     contradictions = analysis.get("contradictions", [])
 
@@ -98,9 +93,7 @@ def display_critical_analysis(analysis: dict) -> None:
             if not isinstance(item, dict):
                 continue
 
-            with st.expander(
-                str(item.get("claim", "Evidence conflict"))
-            ):
+            with st.expander(str(item.get("claim", "Evidence conflict"))):
                 st.write(
                     item.get(
                         "explanation",
@@ -110,14 +103,10 @@ def display_critical_analysis(analysis: dict) -> None:
 
                 source_ids = item.get("source_ids", [])
                 if source_ids:
-                    st.caption(
-                        "Sources: " + ", ".join(map(str, source_ids))
-                    )
+                    st.caption("Sources: " + ", ".join(map(str, source_ids)))
 
     uncertain = (
-        analysis.get("uncertain_claims")
-        or analysis.get("uncertain_findings")
-        or []
+        analysis.get("uncertain_claims") or analysis.get("uncertain_findings") or []
     )
 
     if uncertain:
@@ -125,9 +114,7 @@ def display_critical_analysis(analysis: dict) -> None:
 
         for item in uncertain:
             if isinstance(item, dict):
-                st.markdown(
-                    f"- **{item.get('claim', 'Uncertain claim')}**"
-                )
+                st.markdown(f"- **{item.get('claim', 'Uncertain claim')}**")
                 explanation = item.get("explanation")
                 if explanation:
                     st.write(explanation)
@@ -140,9 +127,7 @@ def display_critical_analysis(analysis: dict) -> None:
         st.subheader("Research Gaps")
         for gap in gaps:
             if isinstance(gap, dict):
-                st.markdown(
-                    f"- {gap.get('description', gap.get('gap', str(gap)))}"
-                )
+                st.markdown(f"- {gap.get('description', gap.get('gap', str(gap)))}")
             else:
                 st.markdown(f"- {gap}")
 
@@ -163,9 +148,7 @@ def display_insights(insight_data: dict) -> None:
             if not isinstance(item, dict):
                 continue
 
-            title = item.get("title") or item.get(
-                "insight", f"Insight {index}"
-            )
+            title = item.get("title") or item.get("insight", f"Insight {index}")
 
             with st.container(border=True):
                 st.markdown(f"**{index}. {title}**")
@@ -176,10 +159,7 @@ def display_insights(insight_data: dict) -> None:
 
                 source_ids = item.get("source_ids", [])
                 if source_ids:
-                    st.caption(
-                        "Evidence sources: "
-                        + ", ".join(map(str, source_ids))
-                    )
+                    st.caption("Evidence sources: " + ", ".join(map(str, source_ids)))
 
                 confidence = item.get("confidence")
                 if confidence:
@@ -208,10 +188,7 @@ def display_insights(insight_data: dict) -> None:
 
                 source_ids = item.get("source_ids", [])
                 if source_ids:
-                    st.caption(
-                        "Related sources: "
-                        + ", ".join(map(str, source_ids))
-                    )
+                    st.caption("Related sources: " + ", ".join(map(str, source_ids)))
 
     if not insights and not hypotheses:
         st.info(
@@ -268,9 +245,7 @@ def display_fact_check(audit: dict | None) -> None:
     issues = audit.get("final_issues", [])
 
     if status == "fact_checked" and verdict == "pass":
-        st.success(
-            "No material factual issues were identified in the final check."
-        )
+        st.success("No material factual issues were identified in the final check.")
     else:
         st.warning(
             "Some claims need further review. Read the issues below "
@@ -298,9 +273,7 @@ def display_fact_check(audit: dict | None) -> None:
             continue
 
         claim = issue.get("claim", f"Issue {index}")
-        status_text = str(issue.get("status", "uncertain")).replace(
-            "_", " "
-        ).title()
+        status_text = str(issue.get("status", "uncertain")).replace("_", " ").title()
 
         with st.container(border=True):
             st.markdown(f"**{index}. {claim}**")
@@ -311,9 +284,7 @@ def display_fact_check(audit: dict | None) -> None:
 
             source_ids = issue.get("source_ids", [])
             if source_ids:
-                st.caption(
-                    "Related sources: " + ", ".join(map(str, source_ids))
-                )
+                st.caption("Related sources: " + ", ".join(map(str, source_ids)))
 
             quote = issue.get("evidence_quote")
             if quote:
@@ -326,9 +297,15 @@ def display_fact_check(audit: dict | None) -> None:
     with st.expander("Detailed Fact-Check Audit"):
         st.markdown("### Verification Summary")
 
-        st.write(f"**Research question:** {audit.get('research_question', 'Not available')}")
-        st.write(f"**Initial verdict:** {str(audit.get('initial_verdict', 'unknown')).replace('_', ' ').title()}")
-        st.write(f"**Final verdict:** {str(audit.get('final_verdict', 'unknown')).replace('_', ' ').title()}")
+        st.write(
+            f"**Research question:** {audit.get('research_question', 'Not available')}"
+        )
+        st.write(
+            f"**Initial verdict:** {str(audit.get('initial_verdict', 'unknown')).replace('_', ' ').title()}"
+        )
+        st.write(
+            f"**Final verdict:** {str(audit.get('final_verdict', 'unknown')).replace('_', ' ').title()}"
+        )
         st.write(
             f"**Correction attempts:** {audit.get('correction_attempts', 0)} "
             f"of {audit.get('max_correction_attempts', 1)}"
@@ -347,7 +324,9 @@ def display_fact_check(audit: dict | None) -> None:
         else:
             for index, issue in enumerate(issues, start=1):
                 with st.container(border=True):
-                    st.markdown(f"**{index}. {issue.get('claim', 'Unspecified claim')}**")
+                    st.markdown(
+                        f"**{index}. {issue.get('claim', 'Unspecified claim')}**"
+                    )
                     st.write(
                         f"**Issue type:** "
                         f"{str(issue.get('status', 'uncertain')).replace('_', ' ').title()}"
@@ -366,7 +345,6 @@ def display_fact_check(audit: dict | None) -> None:
             st.json(audit)
 
 
-
 def run_module(module_name: str) -> None:
     """Run an existing package module and surface errors in Streamlit."""
     completed = subprocess.run(
@@ -379,9 +357,7 @@ def run_module(module_name: str) -> None:
 
     if completed.returncode != 0:
         details = completed.stderr.strip() or completed.stdout.strip()
-        raise RuntimeError(
-            f"Stage '{module_name}' failed.\n{details[-6000:]}"
-        )
+        raise RuntimeError(f"Stage '{module_name}' failed.\n{details[-6000:]}")
 
     # if completed.stdout.strip():
     #     st.code(completed.stdout[-4000:], language="text")
@@ -394,19 +370,17 @@ def run_research_workflow(question: str) -> dict:
 
     if not is_valid:
         raise ValueError(message)
-    
+
     progress = st.progress(0, text="Preparing research workflow...")
     stage_status = st.status("Running research agents...", expanded=True)
 
-    try:    
+    try:
         # 1. Query Planner Agent
         stage_status.write("1/8 — Planning research queries")
         queries = plan_research(question)
 
         if not queries:
-            raise RuntimeError(
-                "The Query Planner returned no usable research queries."
-            )
+            raise RuntimeError("The Query Planner returned no usable research queries.")
 
         st.session_state["research_queries"] = queries
         progress.progress(10, text="Research queries planned")
@@ -414,7 +388,11 @@ def run_research_workflow(question: str) -> dict:
         # 2. Cost Optimizer + Contextual Retriever Agent
         # retrieve_sources() calls optimize_queries() internally.
         stage_status.write("2/8 — Optimizing cost and retrieving sources")
-        sources = retrieve_sources(queries)
+        # sources = retrieve_sources(queries)
+        sources = retrieve_sources(
+            queries,
+            research_question=question,
+        )
 
         if not sources:
             raise RuntimeError(
@@ -456,9 +434,7 @@ def run_research_workflow(question: str) -> dict:
         run_module("numerical_evidence_extractor")
 
         if not CHART_DATA_FILE.exists():
-            raise RuntimeError(
-                "Numerical extraction did not create chart_data.json."
-            )
+            raise RuntimeError("Numerical extraction did not create chart_data.json.")
 
         progress.progress(68, text="Numerical evidence extracted")
 
@@ -495,9 +471,7 @@ def run_research_workflow(question: str) -> dict:
             "report": REPORT_MD_FILE.read_text(encoding="utf-8"),
             "report_result": report_result,
             "fact_check": (
-                read_json(FACT_CHECK_FILE)
-                if FACT_CHECK_FILE.exists()
-                else None
+                read_json(FACT_CHECK_FILE) if FACT_CHECK_FILE.exists() else None
             ),
             "budget": search_budget_status(),
         }
@@ -520,8 +494,36 @@ def run_research_workflow(question: str) -> dict:
         raise RuntimeError(str(exc)) from exc
 
 
+# def display_sources(sources: list[dict]) -> None:
+#     """Display retrieved sources and their metadata."""
+#     if not sources:
+#         st.info("No sources available.")
+#         return
+
+#     for source in sources:
+#         source_id = source.get("source_id", "Unknown")
+#         title = source.get("title", "Untitled source")
+#         url = source.get("url", "")
+#         content = source.get("content", "")
+#         score = source.get("relevance_score")
+
+#         with st.expander(f"[{source_id}] {title}"):
+#             if url:
+#                 st.markdown(f"**Source URL:** [{url}]({url})")
+
+#             if score is not None:
+#                 st.write(f"Relevance score: {score}")
+
+#             matched_queries = source.get("matched_queries", [])
+#             if matched_queries:
+#                 st.write("Matched queries:", ", ".join(matched_queries))
+
+#             st.write(content or "No source excerpt was returned.")
+
+
 def display_sources(sources: list[dict]) -> None:
-    """Display retrieved sources and their metadata."""
+    """Display retrieved sources, publication dates, and freshness."""
+
     if not sources:
         st.info("No sources available.")
         return
@@ -533,6 +535,13 @@ def display_sources(sources: list[dict]) -> None:
         content = source.get("content", "")
         score = source.get("relevance_score")
 
+        published_date = source.get("published_date")
+        freshness_status = source.get(
+            "freshness_status",
+            "not_checked",
+        )
+        freshness_window = source.get("freshness_window") or {}
+
         with st.expander(f"[{source_id}] {title}"):
             if url:
                 st.markdown(f"**Source URL:** [{url}]({url})")
@@ -540,12 +549,52 @@ def display_sources(sources: list[dict]) -> None:
             if score is not None:
                 st.write(f"Relevance score: {score}")
 
+            if published_date:
+                st.write(f"**Publication date:** {published_date}")
+            else:
+                st.write("**Publication date:** Unavailable or unverified")
+
+            if freshness_status == "recent_in_requested_window":
+                st.success(
+                    "Publication date is within the requested window "
+                    f"({freshness_window.get('start_date')} to "
+                    f"{freshness_window.get('end_date')})."
+                )
+
+            elif freshness_status == "outdated_for_requested_window":
+                st.warning(
+                    "This source predates the requested window "
+                    f"({freshness_window.get('start_date')} to "
+                    f"{freshness_window.get('end_date')}). "
+                    "Use it as historical context."
+                )
+
+            elif freshness_status == "undated":
+                st.warning(
+                    "The publication date could not be verified. "
+                    "Do not assume this source is recent."
+                )
+
+            elif freshness_status == "future_date_check":
+                st.warning(
+                    "The returned publication date is in the future. "
+                    "Verify the source before relying on it."
+                )
+
+            else:
+                st.caption(
+                    "Publication-date freshness checking was not "
+                    "required for this question."
+                )
+
             matched_queries = source.get("matched_queries", [])
             if matched_queries:
-                st.write("Matched queries:", ", ".join(matched_queries))
+                st.write(
+                    "Matched queries:",
+                    ", ".join(matched_queries),
+                )
 
             st.write(content or "No source excerpt was returned.")
-
 
 
 def display_charts(manifest: dict) -> None:
@@ -554,9 +603,7 @@ def display_charts(manifest: dict) -> None:
     charts = manifest.get("charts", [])
 
     if manifest.get("status") != "completed" or not charts:
-        st.info(
-            "No validated charts were generated for this research question."
-        )
+        st.info("No validated charts were generated for this research question.")
         return
 
     chart_root = CHART_DIR.resolve()
@@ -649,7 +696,6 @@ run_clicked = st.button(
 #         with st.spinner("Running your multi-agent research workflow..."):
 
 
-
 #             result = run_research_workflow(question.strip())
 
 #         st.session_state["research_result"] = result
@@ -701,47 +747,31 @@ if run_clicked:
 
     question_text = question.strip()
 
-    is_valid, validation_message = is_valid_research_question(
-        question_text
-    )
+    is_valid, validation_message = is_valid_research_question(question_text)
 
-    is_specific, scope_message = validate_research_scope(
-        question_text
-    )
+    is_specific, scope_message = validate_research_scope(question_text)
 
     if not is_valid:
-        st.error(
-            "The research workflow did not complete.\n\n"
-            f"{validation_message}"
-        )
+        st.error("The research workflow did not complete.\n\n" f"{validation_message}")
 
     elif not is_specific:
-        st.warning(
-            "Please narrow your research question.\n\n"
-            f"{scope_message}"
-        )
+        st.warning("Please narrow your research question.\n\n" f"{scope_message}")
 
     else:
         try:
-            with st.spinner(
-                "Running your multi-agent research workflow..."
-            ):
+            with st.spinner("Running your multi-agent research workflow..."):
                 result = run_research_workflow(question_text)
 
             st.session_state["research_result"] = result
             st.success("Research workflow completed.")
 
         except ValueError as exc:
-            st.error(
-                "The research workflow did not complete.\n\n"
-                f"{exc}"
-            )
+            st.error("The research workflow did not complete.\n\n" f"{exc}")
 
         except Exception:
             logging.exception("Research workflow failed")
             st.error(
-                "The research workflow did not complete. "
-                "Please try again later."
+                "The research workflow did not complete. " "Please try again later."
             )
 
 
@@ -767,9 +797,7 @@ if result:
         report_result.get("correction_attempts", 0),
     )
 
-    st.caption(
-        f"Estimated Tavily credits remaining: {budget['credits_remaining']}"
-    )
+    st.caption(f"Estimated Tavily credits remaining: {budget['credits_remaining']}")
 
     if fact_check:
         display_fact_check(fact_check)

@@ -1,12 +1,112 @@
 {
-  "research_question": "asdf qwer zxcv random words",
-  "observations": [],
+  "research_question": "What changed in AI regulation this month?",
+  "observations": [
+    {
+      "label": "EU AI Act cited by firms",
+      "group": "International AI frameworks",
+      "value": 71.0,
+      "unit": "%",
+      "source_id": "S1",
+      "evidence_text": "International AI frameworks, such as the EU AI Act and NIST AI Risk Management Framework, were frequently mentioned, cited by 71% and 60% of respondents respectively."
+    },
+    {
+      "label": "NIST AI Risk Management Framework cited by firms",
+      "group": "International AI frameworks",
+      "value": 60.0,
+      "unit": "%",
+      "source_id": "S1",
+      "evidence_text": "International AI frameworks, such as the EU AI Act and NIST AI Risk Management Framework, were frequently mentioned, cited by 71% and 60% of respondents respectively."
+    },
+    {
+      "label": "FCA AI Update cited by firms",
+      "group": "UK regulatory frameworks",
+      "value": 65.0,
+      "unit": "%",
+      "source_id": "S1",
+      "evidence_text": "FCA guidance was also frequently mentioned, notably the FCA AI Update (65%) and Consumer Duty (63%)."
+    },
+    {
+      "label": "Consumer Duty cited by firms",
+      "group": "UK regulatory frameworks",
+      "value": 63.0,
+      "unit": "%",
+      "source_id": "S1",
+      "evidence_text": "FCA guidance was also frequently mentioned, notably the FCA AI Update (65%) and Consumer Duty (63%)."
+    },
+    {
+      "label": "No regulatory constraints reported by firms",
+      "group": "Regulatory constraints",
+      "value": 28.0,
+      "unit": "%",
+      "source_id": "S1",
+      "evidence_text": "28% of respondents indicated no regulatory constraints."
+    },
+    {
+      "label": "High compliance burden perceived for UK data protection and privacy",
+      "group": "Regulatory constraints",
+      "value": 42.0,
+      "unit": "%",
+      "source_id": "S1",
+      "evidence_text": "42% and 29% of respondents, respectively, perceived that they posed a high compliance burden."
+    },
+    {
+      "label": "High compliance burden perceived for international regulation",
+      "group": "Regulatory constraints",
+      "value": 29.0,
+      "unit": "%",
+      "source_id": "S1",
+      "evidence_text": "42% and 29% of respondents, respectively, perceived that they posed a high compliance burden."
+    },
+    {
+      "label": "Investment in data centers as percentage of GDP",
+      "group": "Malaysia AI investments",
+      "value": 18.0,
+      "unit": "%",
+      "source_id": "S7",
+      "evidence_text": "In Malaysia, for example, investment in data centers now accounts for about 18% of GDP—a stunning number that may partly explain Malaysia’s 6% economic growth in the most recent quarter."
+    },
+    {
+      "label": "Economic growth in Malaysia",
+      "group": "Malaysia AI investments",
+      "value": 6.0,
+      "unit": "%",
+      "source_id": "S7",
+      "evidence_text": "In Malaysia, for example, investment in data centers now accounts for about 18% of GDP—a stunning number that may partly explain Malaysia’s 6% economic growth in the most recent quarter."
+    },
+    {
+      "label": "Increase in automobile exports",
+      "group": "China trade",
+      "value": 62.0,
+      "unit": "%",
+      "source_id": "S7",
+      "evidence_text": "There was also a significant increase in exports of automobiles, which were up 62% from a year earlier."
+    },
+    {
+      "label": "Recommendations for UK healthcare-AI regulatory framework",
+      "group": "UK healthcare AI regulation",
+      "value": 44.0,
+      "unit": "recommendations",
+      "source_id": "S8",
+      "evidence_text": "On 10 September 2026, an MHRA-established independent commission published 44 recommendations for a new UK healthcare-AI regulatory and assurance framework."
+    }
+  ],
   "extraction_summary": {
     "sources_considered": 8,
-    "candidates_returned": 0,
-    "accepted": 0,
-    "rejected": 0,
-    "rejected_observations": [],
-    "message": "No numerical observations passed validation. The visualizer should skip chart generation."
+    "candidates_returned": 13,
+    "accepted": 11,
+    "rejected": 2,
+    "rejected_observations": [
+      {
+        "label": "AI firms making data protection changes",
+        "source_id": "S3",
+        "reason": "Numeric value does not appear in the excerpt."
+      },
+      {
+        "label": "Duration of ICO scrutiny",
+        "source_id": "S3",
+        "reason": "Numeric value does not appear in the excerpt."
+      }
+    ],
+    "message": "Verified source excerpts are available for visualization."
   }
 }

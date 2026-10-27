@@ -110,8 +110,59 @@ def create_critical_analysis_agent() -> Agent:
     )
 
 
+# def prepare_evidence(sources: list[dict]) -> tuple[str, set[str]]:
+#     """Prepare bounded, structured evidence for the analysis agent."""
+
+#     if not sources:
+#         raise ValueError(
+#             "No research sources were provided for critical analysis."
+#         )
+
+#     evidence_blocks = []
+#     valid_source_ids = set()
+#     total_chars = 0
+
+#     for source in sources[:MAX_SOURCES_FOR_ANALYSIS]:
+#         source_id = str(source.get("source_id", "")).strip()
+#         title = str(source.get("title", "Untitled")).strip()
+#         url = str(source.get("url", "")).strip()
+#         content = str(source.get("content", "")).strip()
+
+#         if not source_id or not content:
+#             continue
+
+#         remaining_chars = MAX_TOTAL_EVIDENCE_CHARS - total_chars
+
+#         if remaining_chars <= 0:
+#             break
+
+#         content = content[:min(
+#             MAX_CHARS_PER_SOURCE,
+#             remaining_chars,
+#         )]
+
+#         block = (
+#             f"Source ID: {source_id}\n"
+#             f"Title: {title}\n"
+#             f"URL: {url}\n"
+#             f"Retrieved content:\n{content}"
+#         )
+
+#         evidence_blocks.append(block)
+#         valid_source_ids.add(source_id)
+#         total_chars += len(block)
+
+#     if not evidence_blocks:
+#         raise ValueError(
+#             "No usable source content was available for analysis."
+#         )
+
+#     return "\n\n--- SOURCE SEPARATOR ---\n\n".join(
+#         evidence_blocks
+#     ), valid_source_ids
+
 def prepare_evidence(sources: list[dict]) -> tuple[str, set[str]]:
-    """Prepare bounded, structured evidence for the analysis agent."""
+    """Prepare bounded evidence, including publication-date metadata."""
 
     if not sources:
         raise ValueError(
@@ -136,6 +187,13 @@ def prepare_evidence(sources: list[dict]) -> tuple[str, set[str]]:
         if remaining_chars <= 0:
             break
 
+        published_date = source.get("published_date")
+        freshness_status = source.get(
+            "freshness_status",
+            "not_checked",
+        )
+        freshness_window = source.get("freshness_window") or {}
+
         content = content[:min(
             MAX_CHARS_PER_SOURCE,
             remaining_chars,
@@ -145,6 +203,12 @@ def prepare_evidence(sources: list[dict]) -> tuple[str, set[str]]:
             f"Source ID: {source_id}\n"
             f"Title: {title}\n"
             f"URL: {url}\n"
+            f"Publication date: "
+            f"{published_date or 'UNAVAILABLE / UNVERIFIED'}\n"
+            f"Freshness status: {freshness_status}\n"
+            f"Requested date window: "
+            f"{freshness_window.get('start_date', 'not specified')} "
+            f"to {freshness_window.get('end_date', 'not specified')}\n"
             f"Retrieved content:\n{content}"
         )
 
@@ -157,10 +221,10 @@ def prepare_evidence(sources: list[dict]) -> tuple[str, set[str]]:
             "No usable source content was available for analysis."
         )
 
-    return "\n\n--- SOURCE SEPARATOR ---\n\n".join(
-        evidence_blocks
-    ), valid_source_ids
-
+    return (
+        "\n\n--- SOURCE SEPARATOR ---\n\n".join(evidence_blocks),
+        valid_source_ids,
+    )
 
 def analyze_evidence(
     research_question: str,
@@ -209,6 +273,20 @@ def analyze_evidence(
             "10. If the sources are insufficient, explicitly state "
             "that limitation rather than filling gaps with assumptions.\n\n"
             "Return the results in the requested structured format."
+            "11. For current-information questions, inspect the "
+            "publication date and freshness status provided for each "
+            "source. Prioritize sources marked "
+            "'recent_in_requested_window'.\n"
+            "12. Treat sources marked "
+            "'outdated_for_requested_window' as historical context, "
+            "not as evidence of a recent change.\n"
+            "13. Explicitly identify undated or unverified sources "
+            "as a limitation. Never assume an undated source is recent.\n"
+            "14. If dates are missing or the available sources do not "
+            "establish what changed during the requested period, state "
+            "that limitation in uncertain claims or research gaps.\n"
+            "15. A publication date alone does not establish that a "
+            "claim is true or that the event itself occurred on that date.\n"
         ),
         expected_output=(
             "A structured critical analysis containing an overall "

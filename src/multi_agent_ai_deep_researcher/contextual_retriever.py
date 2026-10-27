@@ -12,6 +12,10 @@ from urllib.parse import (
 from .cost_optimizer import optimize_queries
 from dotenv import load_dotenv
 from tavily import TavilyClient
+from .freshness import (
+    get_freshness_window,
+    assess_publication_date,
+)
 
 load_dotenv()
 
@@ -139,45 +143,192 @@ def search_budget_status() -> dict:
     }
 
 
-def retrieve_sources(subqueries: list[str]) -> list[dict]:
-    """
-    Execute a bounded number of Tavily searches and deduplicate results.
+# def retrieve_sources(subqueries: list[str]) -> list[dict]:
+#     """
+#     Execute a bounded number of Tavily searches and deduplicate results.
 
-    The monthly ledger reserves estimated credits before each request.
-    Failed requests remain charged locally as a conservative safeguard.
+#     The monthly ledger reserves estimated credits before each request.
+#     Failed requests remain charged locally as a conservative safeguard.
+#     """
+
+#     if MAX_SEARCHES_PER_RUN < 1:
+#         raise RuntimeError("MAX_TAVILY_SEARCHES_PER_RUN must be at least 1.")
+
+#     if MAX_RESULTS_PER_SEARCH < 1 or MAX_UNIQUE_SOURCES < 1:
+#         raise RuntimeError("Search-result and unique-source limits must be positive.")
+
+#     api_key = os.getenv("TAVILY_API_KEY")
+
+#     if not api_key:
+#         raise RuntimeError("TAVILY_API_KEY is missing from the .env file.")
+
+#     # Remove empty and repeated queries before spending credits.
+#     # unique_queries = []
+#     # seen_queries = set()
+
+#     # for query in subqueries:
+#     #     query = query.strip()
+#     #     normalized_query = re.sub(r"\s+", " ", query).casefold()
+
+#     #     if normalized_query and normalized_query not in seen_queries:
+#     #         unique_queries.append(query)
+#     #         seen_queries.add(normalized_query)
+
+#     # # Hard per-run limit.
+#     # unique_queries = unique_queries[:MAX_SEARCHES_PER_RUN]
+
+#     # if not unique_queries:
+#     #     return []
+
+
+#     # Optimize queries before creating a Tavily client or spending credits.
+#     usage = _read_usage()
+#     credits_remaining = max(
+#         0,
+#         MAX_MONTHLY_CREDITS - usage["credits_used"],
+#     )
+
+#     optimization = optimize_queries(
+#         subqueries,
+#         credits_remaining=credits_remaining,
+#         credits_per_search=CREDITS_PER_SEARCH,
+#         max_searches_per_run=MAX_SEARCHES_PER_RUN,
+#     )
+
+#     unique_queries = optimization["selected_queries"]
+
+#     print("\nCOST OPTIMIZER")
+#     print("=" * 40)
+#     print(
+#         f"Unique queries: "
+#         f"{optimization['unique_queries_after_deduplication']}"
+#     )
+#     print(f"Selected searches: {len(unique_queries)}")
+#     print(
+#         f"Estimated credits required: "
+#         f"{optimization['estimated_credits_required']}"
+#     )
+#     print(f"Credits remaining: {credits_remaining}")
+
+#     for skipped in optimization["skipped_queries"]:
+#         print(
+#             f"Skipped query: {skipped['query']} "
+#             f"({skipped['reason']})"
+#         )
+
+#     if not unique_queries:
+#         print("Cost Optimizer selected no searches.")
+#         return []
+
+
+#     ###################################################################
+
+#     client = TavilyClient(api_key=api_key)
+#     unique_sources = {}
+
+#     for query in unique_queries:
+#         usage = _read_usage()
+
+#         if usage["credits_used"] + CREDITS_PER_SEARCH > MAX_MONTHLY_CREDITS:
+#             print(
+#                 "Tavily monthly application budget reached. "
+#                 "Stopping further searches."
+#             )
+#             break
+
+#         # Reserve estimated credits BEFORE sending the request.
+#         # A timeout may still consume provider credits.
+#         usage["credits_used"] += CREDITS_PER_SEARCH
+#         _write_usage(usage)
+
+#         print(f"Searching Tavily: {query}")
+
+#         response = client.search(
+#             query=query,
+#             search_depth="basic",
+#             max_results=MAX_RESULTS_PER_SEARCH,
+#             include_answer=False,
+#             include_raw_content=False,
+#         )
+
+#         for item in response.get("results", []):
+#             url = item.get("url", "").strip()
+
+#             if not url:
+#                 continue
+
+#             canonical_url = normalize_url(url)
+
+#             if canonical_url in unique_sources:
+#                 # Preserve which queries discovered this source.
+#                 existing = unique_sources[canonical_url]
+#                 existing["matched_queries"].add(query)
+#                 continue
+
+#             if len(unique_sources) >= MAX_UNIQUE_SOURCES:
+#                 continue
+
+#             unique_sources[canonical_url] = {
+#                 "source_id": f"S{len(unique_sources) + 1}",
+#                 "title": item.get("title", "Untitled"),
+#                 "url": url,
+#                 "canonical_url": canonical_url,
+#                 "content": item.get("content", ""),
+#                 "relevance_score": item.get("score"),
+#                 "matched_queries": {query},
+#             }
+
+#     # Convert sets to JSON-friendly lists.
+#     sources = []
+
+#     for source in unique_sources.values():
+#         source["matched_queries"] = sorted(source["matched_queries"])
+#         sources.append(source)
+
+#     print(f"\nUnique sources retrieved: {len(sources)}")
+#     print(f"Search budget: {search_budget_status()}")
+
+#     return sources
+
+
+def retrieve_sources(
+    subqueries: list[str],
+    research_question: str | None = None,
+) -> list[dict]:
+    """
+    Execute budget-limited Tavily searches and retain freshness metadata.
+
+    No additional searches are made for date verification.
+    The original question is optional for backward compatibility.
     """
 
     if MAX_SEARCHES_PER_RUN < 1:
-        raise RuntimeError("MAX_TAVILY_SEARCHES_PER_RUN must be at least 1.")
+        raise RuntimeError(
+            "MAX_TAVILY_SEARCHES_PER_RUN must be at least 1."
+        )
 
     if MAX_RESULTS_PER_SEARCH < 1 or MAX_UNIQUE_SOURCES < 1:
-        raise RuntimeError("Search-result and unique-source limits must be positive.")
+        raise RuntimeError(
+            "Search-result and unique-source limits must be positive."
+        )
 
     api_key = os.getenv("TAVILY_API_KEY")
 
     if not api_key:
-        raise RuntimeError("TAVILY_API_KEY is missing from the .env file.")
+        raise RuntimeError(
+            "TAVILY_API_KEY is missing from the .env file."
+        )
 
-    # Remove empty and repeated queries before spending credits.
-    # unique_queries = []
-    # seen_queries = set()
+    # Use the original question to detect time-sensitive requests.
+    # Fall back to the planned queries for existing callers.
+    freshness_question = (
+        research_question
+        or " ".join(subqueries)
+    )
 
-    # for query in subqueries:
-    #     query = query.strip()
-    #     normalized_query = re.sub(r"\s+", " ", query).casefold()
+    freshness_window = get_freshness_window(freshness_question)
 
-    #     if normalized_query and normalized_query not in seen_queries:
-    #         unique_queries.append(query)
-    #         seen_queries.add(normalized_query)
-
-    # # Hard per-run limit.
-    # unique_queries = unique_queries[:MAX_SEARCHES_PER_RUN]
-
-    # if not unique_queries:
-    #     return []
-
-
-    # Optimize queries before creating a Tavily client or spending credits.
+    # Preserve the existing monthly budget and query optimization.
     usage = _read_usage()
     credits_remaining = max(
         0,
@@ -216,8 +367,17 @@ def retrieve_sources(subqueries: list[str]) -> list[dict]:
         print("Cost Optimizer selected no searches.")
         return []
 
+    print(
+        f"Current-information search: "
+        f"{freshness_window['requires_current_information']}"
+    )
 
-    ###################################################################
+    if freshness_window["requires_current_information"]:
+        print(
+            f"Requested publication window: "
+            f"{freshness_window['start_date']} to "
+            f"{freshness_window['end_date']}"
+        )
 
     client = TavilyClient(api_key=api_key)
     unique_sources = {}
@@ -225,40 +385,78 @@ def retrieve_sources(subqueries: list[str]) -> list[dict]:
     for query in unique_queries:
         usage = _read_usage()
 
-        if usage["credits_used"] + CREDITS_PER_SEARCH > MAX_MONTHLY_CREDITS:
+        if (
+            usage["credits_used"] + CREDITS_PER_SEARCH
+            > MAX_MONTHLY_CREDITS
+        ):
             print(
                 "Tavily monthly application budget reached. "
                 "Stopping further searches."
             )
             break
 
-        # Reserve estimated credits BEFORE sending the request.
-        # A timeout may still consume provider credits.
+        # Reserve credits before each existing search.
         usage["credits_used"] += CREDITS_PER_SEARCH
         _write_usage(usage)
 
         print(f"Searching Tavily: {query}")
 
-        response = client.search(
-            query=query,
-            search_depth="basic",
-            max_results=MAX_RESULTS_PER_SEARCH,
-            include_answer=False,
-            include_raw_content=False,
-        )
+        search_options = {
+            "query": query,
+            "search_depth": "basic",
+            "max_results": MAX_RESULTS_PER_SEARCH,
+            "include_answer": False,
+            "include_raw_content": False,
+        }
+
+        # Apply date filtering only to current-information questions.
+        # This modifies the existing request; it does not add a search.
+        if freshness_window["requires_current_information"]:
+            search_options.update({
+                "topic": "news",
+                "start_date": freshness_window["start_date"],
+                "end_date": freshness_window["end_date"],
+            })
+
+        response = client.search(**search_options)
 
         for item in response.get("results", []):
-            url = item.get("url", "").strip()
+            url = str(item.get("url") or "").strip()
 
             if not url:
                 continue
 
             canonical_url = normalize_url(url)
 
+            published_date = (
+                item.get("published_date")
+                or item.get("publishedDate")
+                or item.get("date")
+            )
+
+            freshness_status = assess_publication_date(
+                published_date,
+                freshness_window,
+            )
+
             if canonical_url in unique_sources:
-                # Preserve which queries discovered this source.
                 existing = unique_sources[canonical_url]
                 existing["matched_queries"].add(query)
+
+                # Preserve a publication date if a duplicate result
+                # contains one and the existing result does not.
+                if (
+                    not existing.get("published_date")
+                    and published_date
+                ):
+                    existing["published_date"] = published_date
+                    existing["freshness_status"] = (
+                        assess_publication_date(
+                            published_date,
+                            freshness_window,
+                        )
+                    )
+
                 continue
 
             if len(unique_sources) >= MAX_UNIQUE_SOURCES:
@@ -272,20 +470,32 @@ def retrieve_sources(subqueries: list[str]) -> list[dict]:
                 "content": item.get("content", ""),
                 "relevance_score": item.get("score"),
                 "matched_queries": {query},
+                "published_date": published_date,
+                "freshness_status": freshness_status,
+                "freshness_window": {
+                    "start_date": freshness_window["start_date"],
+                    "end_date": freshness_window["end_date"],
+                    "label": freshness_window["label"],
+                    "requires_current_information": (
+                        freshness_window[
+                            "requires_current_information"
+                        ]
+                    ),
+                },
             }
 
-    # Convert sets to JSON-friendly lists.
     sources = []
 
     for source in unique_sources.values():
-        source["matched_queries"] = sorted(source["matched_queries"])
+        source["matched_queries"] = sorted(
+            source["matched_queries"]
+        )
         sources.append(source)
 
     print(f"\nUnique sources retrieved: {len(sources)}")
     print(f"Search budget: {search_budget_status()}")
 
     return sources
-
 
 if __name__ == "__main__":
     print("Current Tavily application budget:")

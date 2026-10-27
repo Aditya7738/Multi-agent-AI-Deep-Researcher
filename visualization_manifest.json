@@ -1,7 +1,21 @@
 {
   "status": "completed",
-  "validated_observations": 0,
+  "validated_observations": 11,
   "rejected_observations": 0,
-  "charts": [],
-  "message": "No chart was generated. Add sufficient, source-supported numerical observations."
+  "charts": [
+    {
+      "chart_type": "bar",
+      "title": "Source-Reported Numerical Observations (%)",
+      "path": "generated_charts\\evidence_comparison_.html",
+      "observation_count": 10,
+      "units": [
+        "%"
+      ],
+      "source_ids": [
+        "S1",
+        "S7"
+      ]
+    }
+  ],
+  "message": "Charts generated from validated numerical evidence."
 }
