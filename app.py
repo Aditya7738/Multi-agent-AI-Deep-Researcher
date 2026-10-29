@@ -37,6 +37,104 @@ FACT_CHECK_FILE = PROJECT_ROOT / "fact_check_report.json"
 REPORT_MD_FILE = PROJECT_ROOT / "final_research_report.md"
 CHART_DIR = PROJECT_ROOT / "generated_charts"
 
+def get_evidence_status(
+    analysis: dict,
+    insights: dict | None = None,
+    report_result: dict | None = None,
+) -> tuple[bool, str]:
+    """
+    Derive one consistent evidence status for the entire UI.
+
+    Explicit insufficiency from Critical Analysis takes priority.
+    This status is a safeguard, not a guarantee of factual correctness.
+    """
+
+    analysis = analysis if isinstance(analysis, dict) else {}
+    insights = insights if isinstance(insights, dict) else {}
+    report_result = (
+        report_result if isinstance(report_result, dict) else {}
+    )
+
+    # An explicit insufficiency flag from any stage takes priority.
+    if analysis.get("evidence_sufficient") is False:
+        return False, "Insufficient evidence"
+
+    insight_flag = insights.get("evidence_sufficient")
+    if insight_flag is False:
+        return False, "Insufficient evidence"
+
+    if report_result.get("evidence_sufficient") is False:
+        return False, "Insufficient evidence"
+
+    # Detect explicit warnings in the existing assessment text.
+    assessment = str(
+        analysis.get("overall_assessment", "")
+    ).casefold()
+
+    insufficient_phrases = (
+        "insufficient evidence",
+        "no evidence",
+        "lack of evidence",
+        "not enough evidence",
+        "cannot be verified",
+        "could not be verified",
+        "does not establish",
+        "do not establish",
+        "unable to verify",
+        "unsupported by the evidence",
+    )
+
+    if any(
+        phrase in assessment
+        for phrase in insufficient_phrases
+    ):
+        return False, "Insufficient evidence"
+
+    # Also inspect uncertainty and research gaps, which your
+    # Critical Analysis Agent already generates.
+    uncertain = analysis.get("uncertain_claims", [])
+    gaps = analysis.get("research_gaps", [])
+
+    text = " ".join(
+        str(item)
+        for item in (uncertain or []) + (gaps or [])
+    ).casefold()
+
+    if any(
+        phrase in text
+        for phrase in (
+            "no evidence",
+            "insufficient evidence",
+            "cannot be verified",
+            "could not be verified",
+            "not established",
+        )
+    ):
+        return False, "Insufficient evidence"
+
+    # Do not equate a completed workflow with sufficient evidence.
+    return True, "Evidence assessment available"
+
+
+def display_evidence_status(
+    evidence_sufficient: bool,
+    status_label: str,
+) -> None:
+    """Display the same evidence-status message across result tabs."""
+
+    if not evidence_sufficient:
+        st.error(
+            "**INSUFFICIENT EVIDENCE**\n\n"
+            "The available sources do not establish the central claim. "
+            "Related findings should be treated as background context, "
+            "not as proof. This does not establish that the claim is false."
+        )
+    else:
+        st.info(
+            f"**{status_label}**\n\n"
+            "Review the findings, citations, uncertainties, and fact-check "
+            "results before treating individual claims as verified."
+        )
 
 def display_critical_analysis(analysis: dict) -> None:
     """Render critical analysis as readable research findings."""
@@ -460,20 +558,40 @@ def run_research_workflow(question: str) -> dict:
         # 8. Load final artifacts for the UI
         stage_status.write("8/8 — Loading report, sources, and charts")
 
+        insights_output = read_json(INSIGHTS_FILE)
+
+        report_fact_check = (
+            read_json(FACT_CHECK_FILE)
+            if FACT_CHECK_FILE.exists()
+            else None
+        )
+
+        # Calculate the status once and reuse it across both tabs.
+        evidence_sufficient, evidence_status_label = (
+            get_evidence_status(
+                analysis=critical_analysis,
+                insights=insights_output.get(
+                    "insight_generation",
+                    insights_output,
+                ),
+                report_result=report_result,
+            )
+        )
+
         output = {
             "question": question,
             "queries": queries,
             "sources": sources,
             "critical_analysis": critical_analysis,
-            "insights": read_json(INSIGHTS_FILE),
+            "insights": insights_output,
             "chart_data": read_json(CHART_DATA_FILE),
             "visualization": read_json(MANIFEST_FILE),
             "report": REPORT_MD_FILE.read_text(encoding="utf-8"),
             "report_result": report_result,
-            "fact_check": (
-                read_json(FACT_CHECK_FILE) if FACT_CHECK_FILE.exists() else None
-            ),
+            "fact_check": report_fact_check,
             "budget": search_budget_status(),
+            "evidence_sufficient": evidence_sufficient,
+            "evidence_status_label": evidence_status_label,
         }
 
         progress.progress(100, text="Research workflow completed")
@@ -768,10 +886,25 @@ if run_clicked:
         except ValueError as exc:
             st.error("The research workflow did not complete.\n\n" f"{exc}")
 
-        except Exception:
+        # except Exception:
+        #     logging.exception("Research workflow failed")
+        #     st.error(
+        #         "The research workflow did not complete. " "Please try again later."
+        #     )
+        except Exception as exc:
             logging.exception("Research workflow failed")
-            st.error(
-                "The research workflow did not complete. " "Please try again later."
+
+            st.error("The research workflow did not complete.")
+
+            with st.expander("Technical error details", expanded=True):
+                st.code(
+                    f"{type(exc).__name__}: {exc}",
+                    language="text",
+                )
+
+            st.info(
+                "Check the terminal running Streamlit for the complete "
+                "traceback. Do not share API keys or other secrets."
             )
 
 
@@ -813,6 +946,11 @@ if result:
     )
 
     with tabs[0]:
+        display_evidence_status(
+            result["evidence_sufficient"],
+            result["evidence_status_label"],
+        )
+
         st.markdown(result["report"])
 
         st.download_button(
@@ -850,8 +988,14 @@ if result:
         )
 
     with tabs[4]:
-        analysis = result["critical_analysis"]
+        display_evidence_status(
+            result["evidence_sufficient"],
+            result["evidence_status_label"],
+        )
 
+        st.divider()
+
+        analysis = result["critical_analysis"]
         display_critical_analysis(analysis)
 
         st.divider()

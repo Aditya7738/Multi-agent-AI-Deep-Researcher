@@ -179,6 +179,50 @@ def build_citation_guide(source_registry: dict[str, dict]) -> str:
 
     return json.dumps(entries, ensure_ascii=False, indent=2)
 
+def detect_insufficient_evidence(analysis: dict) -> bool:
+    """Detect whether Critical Analysis explicitly reports insufficient evidence."""
+
+    if analysis.get("evidence_sufficient") is False:
+        return True
+
+    assessment = str(
+        analysis.get("overall_assessment", "")
+    ).casefold()
+
+    indicators = (
+        "insufficient evidence",
+        "no evidence",
+        "lack of evidence",
+        "cannot be verified",
+        "could not be verified",
+        "does not establish",
+        "do not establish",
+        "not enough evidence",
+        "unsupported by the evidence",
+        "unable to verify",
+    )
+
+    if any(term in assessment for term in indicators):
+        return True
+
+    uncertain_claims = analysis.get("uncertain_claims", [])
+    research_gaps = analysis.get("research_gaps", [])
+
+    limitation_text = " ".join(
+        str(item)
+        for item in uncertain_claims + research_gaps
+    ).casefold()
+
+    return any(
+        term in limitation_text
+        for term in (
+            "no evidence",
+            "insufficient evidence",
+            "cannot be verified",
+            "could not be verified",
+            "not established",
+        )
+    )
 
 def create_report_agent() -> Agent:
     return Agent(
@@ -245,6 +289,33 @@ Requirements:
 10. Do not fabricate chart data or treat a hypothesis as a fact.
 11. Do not create a separate fabricated bibliography.
 12. Return only the report body in Markdown.
+13. CENTRAL CLAIM VERIFICATION: Determine whether the supplied
+    evidence directly supports the central research question.
+    Do not treat related background information as proof of the claim.
+
+14. If Critical Analysis identifies insufficient evidence, state
+    prominently that the central claim could not be established
+    from the available evidence. Preserve that conclusion throughout
+    the executive summary, findings, and conclusion.
+
+15. Separate directly relevant findings from background context.
+    Label unrelated developments "Background context" and explain
+    that they do not establish the central claim.
+
+16. Do not present an unsupported hypothesis as a conclusion.
+    Do not invent explanations for why evidence is missing, and do
+    not suggest secret or unofficial activity without direct support.
+
+17. Absence of evidence does not prove that a claim is false.
+    State only that the available sources do not establish it.
+
+18. If the Insight Generation output indicates insufficient evidence
+    or contains no hypotheses because they were suppressed, do not
+    generate new hypotheses to replace them.
+
+19. Do not turn a source's publication date into proof that an
+    event happened on that date. Preserve uncertainty about dates
+    when the supplied metadata is unverified.
 """,
         expected_output=(
             "A structured Markdown research report with source-ID citations."
@@ -495,6 +566,26 @@ def run_report_builder() -> dict:
             "Do not treat unresolved claims as verified facts.\n"
         )
 
+        # Enforce the evidence limitation in the final report.
+    critical_analysis = analysis_data.get("critical_analysis", {})
+    insufficient_evidence = detect_insufficient_evidence(
+        critical_analysis
+    )
+
+    if insufficient_evidence:
+        evidence_notice = (
+            "## Evidence Sufficiency Notice\n\n"
+            "**Status: INSUFFICIENT EVIDENCE.** The available sources "
+            "do not establish the central claim in the research question. "
+            "Related findings, if included, are background context only "
+            "and must not be interpreted as proof of that claim. "
+            "This does not prove the claim is false; it remains unverified "
+            "based on the evidence available in this research run.\n"
+        )
+
+        if "## Evidence Sufficiency Notice" not in narrative:
+            narrative = narrative.rstrip() + "\n\n" + evidence_notice
+
     chart_section = build_chart_section(validated_charts)
     bibliography = build_bibliography(source_registry)
 
@@ -520,6 +611,7 @@ def run_report_builder() -> dict:
 
     result = {
         "status": "completed",
+        "evidence_sufficient": not insufficient_evidence,
         "report_markdown": str(REPORT_MD_FILE.relative_to(PROJECT_ROOT)),
         "report_html": str(REPORT_HTML_FILE.relative_to(PROJECT_ROOT)),
         "validated_charts_embedded": len(validated_charts),

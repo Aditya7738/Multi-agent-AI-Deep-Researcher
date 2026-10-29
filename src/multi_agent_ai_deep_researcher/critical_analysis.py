@@ -226,6 +226,72 @@ def prepare_evidence(sources: list[dict]) -> tuple[str, set[str]]:
         valid_source_ids,
     )
 
+def enforce_evidence_sufficiency(
+    analysis: dict,
+    sources: list[dict],
+) -> dict:
+    """
+    Add a deterministic warning when too little usable evidence exists.
+
+    This is a conservative safeguard, not a complete credibility detector.
+    It does not make unsupported claims true or create new findings.
+    """
+
+    usable_sources = [
+        source
+        for source in sources
+        if str(source.get("source_id", "")).strip()
+        and str(source.get("content", "")).strip()
+    ]
+
+    findings = analysis.get("findings", [])
+    uncertain_claims = analysis.get("uncertain_claims", [])
+    research_gaps = analysis.get("research_gaps", [])
+
+    # A single source is not enough for this system to claim that
+    # an obscure claim has been independently corroborated.
+    insufficient = len(usable_sources) < 2 or not findings
+
+    if not insufficient:
+        return analysis
+
+    reason = (
+        f"Only {len(usable_sources)} usable source(s) were available. "
+        "The evidence is insufficient to establish a reliable conclusion "
+        "or independently corroborate the claim."
+    )
+
+    analysis["overall_assessment"] = (
+        "INSUFFICIENT EVIDENCE: " + reason
+    )
+
+    # Do not delete any findings the agent produced, but make the
+    # evidence limitation visible to the user.
+    limitation = (
+        "The available sources do not establish this claim reliably. "
+        "Do not treat it as verified without additional independent, "
+        "credible evidence."
+    )
+
+    if limitation not in uncertain_claims:
+        uncertain_claims.append(limitation)
+
+    analysis["uncertain_claims"] = uncertain_claims
+
+    gap = (
+        "Find additional independent, credible sources that directly "
+        "support or refute the claim. Verify the original evidence, "
+        "publication dates where relevant, and any conflicting accounts."
+    )
+
+    if gap not in research_gaps:
+        research_gaps.append(gap)
+
+    analysis["research_gaps"] = research_gaps
+    analysis["evidence_sufficient"] = False
+
+    return analysis
+
 def analyze_evidence(
     research_question: str,
     sources: list[dict],
@@ -287,6 +353,42 @@ def analyze_evidence(
             "that limitation in uncertain claims or research gaps.\n"
             "15. A publication date alone does not establish that a "
             "claim is true or that the event itself occurred on that date.\n"
+            "16. EVIDENCE SUFFICIENCY: Determine whether the supplied "
+            "sources directly and credibly support an answer to the "
+            "research question. Do not equate the number of sources "
+            "with evidence quality.\n"
+            "17. If the sources are too few, irrelevant, indirect, "
+            "undated when dates matter, contradictory, or unsupported "
+            "by reliable evidence, explicitly state that the evidence "
+            "is insufficient to reach a reliable conclusion.\n"
+            "18. When evidence is insufficient, explain exactly what "
+            "is missing, identify which claims remain unverified, and "
+            "recommend what evidence would be needed. Do not fill gaps "
+            "using assumptions or general knowledge.\n"
+            "19. Do not present the claim in the research question as "
+            "true merely because the user asked about it. Treat it as "
+            "an unverified claim unless the supplied sources support it.\n"
+            "20. If evidence is insufficient, reflect that limitation "
+            "in overall_assessment, uncertain_claims, and research_gaps. "
+            "Only include findings that are actually supported by the "
+            "provided source content.\n"
+                        "21. QUESTION RELEVANCE: Every finding must directly help "
+            "answer the research question. Do not include unrelated "
+            "developments merely because they share a broad topic.\n"
+            "22. For a question about a specific entity, document, "
+            "publication, or event, require evidence that directly "
+            "identifies that entity or event before reporting it as a "
+            "finding about the target.\n"
+            "23. If sources only provide general background, explicitly "
+            "label it as background context. Do not present it as evidence "
+            "that the specific claim is true.\n"
+            "24. Do not invent possible explanations for missing evidence. "
+            "Do not suggest secret, unofficial, or hidden activity unless "
+            "the supplied evidence directly supports that explanation.\n"
+            "25. If no source directly supports the central claim, state "
+            "that the claim could not be verified from the retrieved "
+            "evidence. Do not infer that the claim is true or false solely "
+            "because no evidence was found.\n"
         ),
         expected_output=(
             "A structured critical analysis containing an overall "
@@ -339,7 +441,16 @@ def analyze_evidence(
                 + ", ".join(sorted(invalid_ids))
             )
 
-    return analysis.model_dump()
+     # Convert the Pydantic model to a regular dictionary.
+    analysis_data = analysis.model_dump()
+
+    # Apply the deterministic insufficient-evidence safeguard.
+    analysis_data = enforce_evidence_sufficiency(
+        analysis=analysis_data,
+        sources=sources,
+    )
+
+    return analysis_data
 
 
 def main() -> None:
